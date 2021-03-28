@@ -14,12 +14,15 @@ html {
 	margin-left: 0.2em;
 }
 .controls {
-	border-radius: 2em;
-    border: 0.05em solid #fff;
     width: 1.7em;
     height: 1.7em;
     text-align: center;
     float: right;
+}
+.controls > a:before {
+	padding: 0.5em;
+    border: 0.05em solid #fff;
+    border-radius: 50%;
 }
 .ledContainer > div > a {
 	vertical-align: middle;
