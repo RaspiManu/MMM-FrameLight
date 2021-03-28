@@ -17,7 +17,7 @@ Module.register("MMM-FrameLight", {
 		ledContainer: "ledContainer",
 		presets: {
 			state: "off",
-			activePreset: 1,
+			activePreset: 3,
 			color0: "rgb(0, 0, 0)",
 			color1: "rgb(0, 0, 0)",
 			color2: "rgb(255, 0, 0)",
@@ -124,14 +124,14 @@ Module.register("MMM-FrameLight", {
 		//Light Button
 		let lightbulb = document.createElement("div");
 		lightbulb.className = 'controls';
-		lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"></a>';
+		lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"><br>' + this.translate("SWITCH") + '</a>';
 		wrapper.appendChild(lightbulb);
 		lightbulb.addEventListener("click", () => switchLights(this.config.presets));
 
 		//Setting Button
 		let settingDiv = document.createElement("div");
 		settingDiv.className = 'controls';
-		settingDiv.innerHTML = '<a class="fas fa-sliders-h"></a>';
+		settingDiv.innerHTML = '<a class="fas fa-sliders-h"><br>' + this.translate("SETTINGS") + '</a>';
 		wrapper.appendChild(settingDiv);
 		settingDiv.addEventListener("click", () => openSettings(this.config.presets));
 
