@@ -164,7 +164,7 @@ Module.register("MMM-FrameLight", {
 			<div id="party">
 				<p>PartyMode</p>
 				<div class="onoffswitch">
-					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch" tabindex="0" checked>
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch" tabindex="0">
 					<label class="onoffswitch-label" for="switch">
 						<span class="onoffswitch-inner"></span>
 						<span class="onoffswitch-switch"></span>
