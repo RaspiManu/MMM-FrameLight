@@ -6,18 +6,13 @@
  * MIT Licensed.
  */
 
-
-
-// Partymode Button - "Party" links und rechts On/Off im Switch
-
-
 Module.register("MMM-FrameLight", {
 	defaults: {
 		refreshInterval: 1000,
 		ledContainer: "ledContainer",
 		presets: {
 			state: "off",
-			activePreset: 3,
+			activePreset: 2,
 			color0: "rgb(0, 0, 0)",
 			color1: "rgb(0, 0, 0)",
 			color2: "rgb(255, 0, 0)",
@@ -36,6 +31,7 @@ Module.register("MMM-FrameLight", {
 		LEDCount: 160,
 		Touchmode: true,
 		ShowCaptions: true,
+		ShowPartyMode: true,
 		NightTimeActive: true,
 		NightTimeStart: 22,
 		NightTimeEnd: 6,
@@ -176,6 +172,11 @@ Module.register("MMM-FrameLight", {
 
 
 		setTimeout(() => { // wait for dom and add event listener
+			if (self.config.ShowPartyMode === false) { // hide PartyMode if set to "false"
+				document.getElementById('party').style.display = 'none';
+				return;
+			}
+		
 			//partyMode event handler
 			let partyModeCheckBox = document.getElementById("switch");
 			partyModeCheckBox.addEventListener("click", () => switchPartyMode());
