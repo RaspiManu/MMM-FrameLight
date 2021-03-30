@@ -14,18 +14,31 @@ html {
 	margin-left: 0.2em;
 }
 .controls {
-    width: 1.7em;
-    height: 1.7em;
+    width: auto;
+    height: auto;
     text-align: center;
     float: right;
 }
 .controls > a:before {
 	padding: 0.5em;
+	margin: auto;
     border: 0.05em solid #fff;
     border-radius: 50%;
+
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1em;
+    width: 1em;
+}
+.controls span {
+	font-family: Roboto, sans-serif;
+    font-weight: 200;
+	font-size: 0.7em;
 }
 .ledContainer > div > a {
 	vertical-align: middle;
+	display: contents;
 }
 .fa-lightbulb:before {
 	vertical-align: middle;

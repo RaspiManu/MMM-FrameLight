@@ -35,6 +35,7 @@ Module.register("MMM-FrameLight", {
 		LEDType: "WS2801",
 		LEDCount: 160,
 		Touchmode: true,
+		ShowCaptions: true,
 		NightTimeActive: true,
 		NightTimeStart: 22,
 		NightTimeEnd: 6,
@@ -124,14 +125,20 @@ Module.register("MMM-FrameLight", {
 		//Light Button
 		let lightbulb = document.createElement("div");
 		lightbulb.className = 'controls';
-		lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"><br>' + this.translate("SWITCH") + '</a>';
+		if (this.config.ShowCaptions) 
+			lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"><span class="btnCaption">' + this.translate("SWITCH") + '</span></a>';
+		else
+			lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"></a>';
 		wrapper.appendChild(lightbulb);
 		lightbulb.addEventListener("click", () => switchLights(this.config.presets));
 
 		//Setting Button
 		let settingDiv = document.createElement("div");
 		settingDiv.className = 'controls';
-		settingDiv.innerHTML = '<a class="fas fa-sliders-h"><br>' + this.translate("SETTINGS") + '</a>';
+		if (this.config.ShowCaptions) 
+			settingDiv.innerHTML = '<a class="fas fa-sliders-h"><span class="btnCaption">' + this.translate("SETTINGS") + '</span></a>';
+		else
+			settingDiv.innerHTML = '<a class="fas fa-sliders-h"></a>';
 		wrapper.appendChild(settingDiv);
 		settingDiv.addEventListener("click", () => openSettings(this.config.presets));
 
