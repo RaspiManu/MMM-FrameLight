@@ -258,8 +258,10 @@ elif "effect" in data:
     start_effect(leds, strEffect=data["effect"], strActiveColor=data["activeColor"], arrColors=data["colors"], arrOptions=[""])
 
 #Reactivate party mode in case it was on before effect
-#if data["partyMode"]:
-    # start party mode
+if "partyMode" in data:
+    while data["partyMode"] == true:
+        start_effect(leds, strEffect=data["PartyMatrix"]["effect"], strActiveColor=data["activeColor"], arrColors=data["PartyMatrix"]["colors"], arrOptions=["PartyMatrix"]["options"])
+
 
 #Deinitialise LEDs
 if "effect" in data: # is there a defined effect?

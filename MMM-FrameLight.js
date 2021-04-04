@@ -36,7 +36,8 @@ Module.register("MMM-FrameLight", {
 		NightTimeStart: 22,
 		NightTimeEnd: 6,
 		NightTimeNotifications: true,
-		Notifications: [{}]
+		Notifications: [{}],
+		PartyMatrix: {}
 	},
 
 	getStyles: function () {
@@ -83,6 +84,23 @@ Module.register("MMM-FrameLight", {
 	},
 
 	/**
+	 * cycle through config color array and substitute "active color"-string
+	 * @param {array} colors contains an array of rgb strings, can contain "active color"
+	 */
+	getActiveColor: function(colors) {
+		let retColor = colors.map(colorString => {
+				if (colorString.trim() != "active color") {
+					return colorString;				
+				} else {
+					return this.config.presets["color" + this.config.presets.activePreset];
+				}
+			}
+		);
+
+		return retColor;
+	},
+
+	/**
 	 * sends ledtype, ledcount, activecolor, partymode and given object to py
 	 * @param {object} objectToPy object containing "effect"(string) and "colors"(array of string)
 	 */
@@ -92,11 +110,22 @@ Module.register("MMM-FrameLight", {
 
 		let activeColor = this.config.presets["color" + this.config.activeField];
 
+		let bufferObject = {}; // workaround to change active color to actual active color in PartyMatrix
+		if (this.config.PartyMatrix["colors"]) {
+			bufferObject = {
+				effect: this.config.PartyMatrix.effect,
+				colors: this.getActiveColor(this.config.PartyMatrix.colors),
+				options: this.config.PartyMatrix.options,
+				repeat: this.config.PartyMatrix.repeat
+			};
+		}
+
 		objectToPy = {
 			...{"LEDType": this.config.LEDType, "LEDCount": this.config.LEDCount}, 
 			...objectToPy,
 			...{"activeColor": activeColor},
-			...{"partyMode": this.config.partyMode}
+			...{"partyMode": this.config.partyMode},
+			...{"PartyMatrix": bufferObject}
 		};
 
 		if (this.config.NightTimeNotifications) {
@@ -401,20 +430,6 @@ Module.register("MMM-FrameLight", {
 	notificationReceived: function(notification, payload, sender) {
 		let self = this;
 
-		// cycle thourg config color array and substitute "active color"-string
-		function getActiveColor(colors) {
-			let retColor = colors.map(colorString => {
-					if (colorString != "active color") {
-						return colorString;				
-					} else {
-						return self.config.presets["color" + self.config.presets.activePreset];
-					}
-				}
-			);
-
-			return retColor;
-		}
-
 		// prepare object for py
 		function buildObject(colorArray, index) {
 			const bufferObject = {
@@ -430,7 +445,7 @@ Module.register("MMM-FrameLight", {
 		// for each configured notification send specified effect to py
 		self.config.Notifications.forEach((nFication, i) => {
 			if (nFication.name == notification) {
-				const bufferColor = getActiveColor(nFication.colors);
+				const bufferColor = self.getActiveColor(nFication.colors);
 				self.sendObjectToPy(buildObject(bufferColor, i));
 			}
 		});
