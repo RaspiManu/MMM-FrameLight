@@ -1,5 +1,6 @@
 {
   "TITLE": "Frame Light",
   "SETTINGS": "Settings",
-  "SWITCH": "Switch"
+  "TURNON": "Turn on",
+  "TURNOFF": "Turn off"
  }

@@ -122,7 +122,7 @@ Module.register("MMM-FrameLight", {
 		let lightbulb = document.createElement("div");
 		lightbulb.className = 'controls';
 		if (this.config.ShowCaptions) 
-			lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"><span class="btnCaption">' + this.translate("SWITCH") + '</span></a>';
+			lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"><span id="switchCaption" class="btnCaption"></span></a>';
 		else
 			lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"></a>';
 		wrapper.appendChild(lightbulb);
@@ -251,14 +251,17 @@ Module.register("MMM-FrameLight", {
 		 */
 		function switchLights(jsonPresets) { 
 			let lightIcon = document.getElementById("lightBulb");
+			let switchCaption = document.getElementById("switchCaption");
 
 			if (lightIcon.classList.contains("far")) {
 				lightIcon.className = "fas fa-lightbulb";
+				switchCaption.innerHTML = self.translate("TURNOFF");
 				self.config.presets.state = "on";
 				jsonPresets.state = "on";
 				self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 			} else {
 				lightIcon.className = "far fa-lightbulb";
+				switchCaption.innerHTML = self.translate("TURNON");
 				self.config.presets.state = "off";
 				jsonPresets.state = "off";
 				self.sendObjectToPy({effect: "lightOff", colors:["rgb(0,0,0)"]});
