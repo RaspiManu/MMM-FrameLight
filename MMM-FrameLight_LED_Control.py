@@ -1,7 +1,7 @@
 #MMM-FrameLight
 #Description:   Python script for controlling WS2801 RGB LED strip
 #Authors:       RaspiManu and ViatorisBaculum
-#License:       MIT
+#License:       MPL-2.0
 
 #Effects Rainbow Cycle Successive, Rainbow Cycle, Rainbow Colors and related helpers are based on the following example:
 #URL:           https://github.com/adafruit/Adafruit_CircuitPython_DotStar/tree/master/examples
@@ -12,13 +12,13 @@
 #Standard Functions
 
 #Name:          Change Color
-#Description:   Fills LED strip with defined color
+#Description:   fills LED strip with defined color
 def set_color(leds, color1=(255,255,255)):
     leds.fill(color1)
     leds.show()
 
 #Name:          Deinitialise LED Strip
-#Description:   Deinitialises LED Strip to shut it down
+#Description:   deinitialises LED Strip to shut it down
 def deinitialise_LED_strip(leds):
     leds.deinit()
 
@@ -26,9 +26,11 @@ def deinitialise_LED_strip(leds):
 #Effects
 
 #Name:          Blink Color
-#Description:   Lets LED strip blink in defined color
+#Description:   lets LED strip blink in defined color
 def blink_color(leds, activeColor, color1=(255,255,255), cycles=2, time_per_step=0.5):
+    #set colors
     color_blink = color1
+    #Effect loop
     for i in range(cycles):
         leds.fill(color_blink)
         leds.show()
@@ -38,46 +40,57 @@ def blink_color(leds, activeColor, color1=(255,255,255), cycles=2, time_per_step
         time.sleep(time_per_step)
 
 #Name:          Rainbow Cycle Successive
-#Description:   Fills LED strip with rainbow colors successively while defined color is in background
+#Description:   fills LED strip with rainbow colors successively while defined color is in background
 def rainbow_cycle_successive(leds, color1=(0,0,0), cycles = 2, time_per_step=0.02):
+    #set colors
     color_background = color1
+    #Effect loop
     for i in range(cycles):
+        #fill background
         leds.fill(color_background)
+        #fill LED strip with rainbow
         for j in range(len(leds)):
             leds[j] = wheel(((j * 256 // len(leds))) % 256)
             leds.show()
             time.sleep(time_per_step)
 
 #Name:          Rainbow Cycle
-#Description:   Lets all rainbow colors spin around at once
+#Description:   lets all rainbow colors spin around at once
 def rainbow_cycle(leds, cycles=2, time_per_step=0.005):
+    #Effect loop
     for i in range(cycles):
-        for j in range(256):
+        for j in range(256):                                            #256 color steps per LED for one cycle
             for k in range(len(leds)):
-                leds[k] = wheel(((k * 256 // len(leds)) + j) % 256)
+                leds[k] = wheel(((k * 256 // len(leds)) + j) % 256)     #Helper function wheel to define color
             leds.show()
             time.sleep(time_per_step)
 
 #Name:          Rainbow Colors
-#Description:   Shifts through all rainbow colors while LED strip only shows one color at a time
+#Description:   shifts through all rainbow colors while LED strip only shows one color at a time
 def rainbow_colors(leds, cycles = 2, time_per_step=0.05):
+    #Effect loop
     for i in range(cycles):
-        for j in range(256):
+        for j in range(256):                                            #256 color steps per LED for one cycle
             for k in range(len(leds)):
-                leds[k] = wheel(((256 // len(leds) + j)) % 256)
+                leds[k] = wheel(((256 // len(leds) + j)) % 256)         #Helper function wheel to define color
             leds.show()
             time.sleep(time_per_step)
 
 #Name:          Docking Trains
-#Description:   Spawns "trains" at the end of the LED strip moving to the start until strip is filled
-#Special:       Switches the defined colors every cycle
+#Description:   spawns "trains" at the end of the LED strip moving to the start until strip is filled
+#Special:       switches the defined colors every cycle
 def docking_trains(leds, color1=(255,0,0), color2=(0,255,0), cycles=4, time_per_step=0.01, length=10):
-    trains_per_cycle = math.ceil(len(leds)/length)
+    #set number of trains
+    trains_per_cycle = math.ceil(len(leds)/length)              #math.ceil rounds up so the LED strip gets completely filled
+    #set colors
     color_background = color1
     color_moving = color2
+    #fill background
     leds.fill(color_background)
     leds.show()
+    #Effect loop
     for i in range(cycles):
+        #Train movement
         for j in range(trains_per_cycle):
             for k in reversed(range(j*length, len(leds))):
                 leds[k] = color_moving
@@ -85,6 +98,7 @@ def docking_trains(leds, color1=(255,0,0), color2=(0,255,0), cycles=4, time_per_
                     leds[k+length] = color_background
                 leds.show()
                 time.sleep(time_per_step)
+        #Color switch after every cycle
         if color_background == color1:
             color_background = color2
             color_moving = color1
@@ -94,20 +108,26 @@ def docking_trains(leds, color1=(255,0,0), color2=(0,255,0), cycles=4, time_per_
         time.sleep(0.5)
 
 #Name:          KITT
-#Description:   Imitates the LED bar of K.I.T.T. from Knight Rider
+#Description:   imitates the LED bar of K.I.T.T. from Knight Rider
 def KITT(leds, color1=(0,0,0), color2=(255,0,0), cycles=2, time_per_step=0.005, length=10):
+    #set colors
     color_background = color1
     color_moving = color2
+    #fill background
     leds.fill(color_background)
+    #fill start segment for effect
     for i in range(0,length):
         leds[i] = color_moving
     leds.show()
+    #Segment movement
     for j in range(cycles):
+        #from start to end of LED strip
         for k in range(length,len(leds)):
             leds[k] = color_moving
             leds[k-length] = color_background
             leds.show()
             time.sleep(time_per_step)
+        #from end back to start of LED strip
         for l in reversed(range(length,len(leds))):
             leds[l] = color_background
             leds[l-length] = color_moving
@@ -115,22 +135,29 @@ def KITT(leds, color1=(0,0,0), color2=(255,0,0), cycles=2, time_per_step=0.005, 
             time.sleep(time_per_step)
 
 #Name:          Wobbling Segments
-#Description:   Splits LED strip into given number of segments with two different colors and lets them wobble
+#Description:   splits LED strip into given number of segments with two different colors and lets them wobble
 def wobbling_segments(leds, color1=(0,0,0), color2=(255,0,0), cycles=2, time_per_step=0.1, segments=10, wobble_factor=1):
-
+    
+    #set segment options with check
     #checking given segment value and find next fitting one, if given one does not fit
-    #print("number of LEDs: ", len(leds))
-    #print("given number of segments: ", segments)
+    
+    #print("number of LEDs: ", len(leds))                                               #Debug command
+    #print("given number of segments: ", segments)                                      #Debug command
+    
+    #given segment value does not fit
     if not segments % 2 == 0 and not len(leds) / segments % 1 == 0:
-        #print("searching for fitting values")
+        #print("searching for fitting values")                                          #Debug command
         divisors = []
         possible_segments = []
+        #check for divisors of LED count
         for i in range(1,len(leds)+1):
             if len(leds) / i % 1 == 0:
                 divisors.append(i)
+        #check for divisors that fit to effect
         for j in divisors:
             if len(leds) / j % 2 == 0:
                 possible_segments.append(int(len(leds) / j))
+        #check for fitting segment value that is closest to user defined segment value
         possible_segments.sort()
         pos = bisect_left(possible_segments, segments)
         if pos == 0:
@@ -144,35 +171,42 @@ def wobbling_segments(leds, color1=(0,0,0), color2=(255,0,0), cycles=2, time_per
                 segments_fit = after
             else:
                 segments_fit = before
+        #set segment length
         segment_length_fit = int(len(leds)/ segments_fit)
-        #print("divisors of number of LEDs: ", divisors)
-        #print("possible numbers of segments: ", possible_segments)
-
+        #print("divisors of number of LEDs: ", divisors)                                #Debug command
+        #print("possible numbers of segments: ", possible_segments)                     #Debug command
+    
+    #given segment value does fit
     else:
-        #print("given values are fitting")
+        #print("given values are fitting")                                              #Debug command
         segments_fit = segments
         segment_length_fit = int(len(leds) / segments_fit)
 
-    #print("fitting number of segments: ", segments_fit)
-    #print("fitting length of segments: ", segment_length_fit)
-
+    #print("fitting number of segments: ", segments_fit)                                #Debug command
+    #print("fitting length of segments: ", segment_length_fit)                          #Debug command
+    
+    #set colors
     color_background = color1
     color_moving = color2
-    wobble_steps = math.ceil(wobble_factor*segment_length_fit)
+    #set wobble steps
+    wobble_steps = math.ceil(wobble_factor*segment_length_fit)  #math.ceil rounds up wobble steps to fitting LED count
 
-    #show effect with fitting parameters
+    #set start of effect with fitting parameters
     leds.fill(color_background)
     for i in range(0,segment_length_fit):
         for j in range(0,segments_fit,2):
             leds[i+j*segment_length_fit] = color_moving
     leds.show()
+    #Effect loop
     for k in range(cycles):
+        #from start to end of LED strip
         for l in range(wobble_steps):
             for m in range(0,segments_fit,2):
                 leds[l+m*segment_length_fit+segment_length_fit] = color_moving
                 leds[l+m*segment_length_fit] = color_background
             leds.show()
             time.sleep(time_per_step)
+        #from end back to start of LED strip
         for n in reversed(range(wobble_steps)):
             for o in range(0,segments_fit,2):
                 leds[n+o*segment_length_fit+segment_length_fit] = color_background
@@ -184,14 +218,14 @@ def wobbling_segments(leds, color1=(0,0,0), color2=(255,0,0), cycles=2, time_per
 #Helpers
 
 #Name:          Create Tuple
-#Description:   Converts RGB values from node helper (string) into tuple
+#Description:   converts RGB values from node helper (string) into tuple
 def create_tuple(strRGB):
     strRGB = strRGB.replace('rgb', '')
     arrRGB = make_tuple(strRGB)
     return arrRGB
 
 #Name:          Start Effect
-#Description:   Starts Effect with defined parameters from node helper
+#Description:   starts effect with defined parameters from node helper
 def start_effect(leds, strEffect, strActiveColor, arrColors = [''], arrOptions = ['']):
     tupleActiveColor = create_tuple(strActiveColor)
     if strEffect == "lightOn":
@@ -214,7 +248,7 @@ def start_effect(leds, strEffect, strActiveColor, arrColors = [''], arrOptions =
         wobbling_segments(leds, color1=create_tuple(arrColors[0]), color2=create_tuple(arrColors[1]), cycles=arrOptions[0], time_per_step=arrOptions[1], segments=arrOptions[2], wobble_factor=arrOptions[3])
 
 #Name:          Wheel
-#Description:   Interpolates between different hues
+#Description:   interpolates between different hues
 def wheel(pos):
     if pos < 85:
         return (pos * 3, 255 - pos * 3, 0)
@@ -226,7 +260,7 @@ def wheel(pos):
         return(0, pos * 3, 255 - pos * 3)
 
 #########################################################################################################################
-#Main Loop
+#Main Code
 
 #Imports
 import sys
@@ -245,7 +279,7 @@ oclock = board.SCLK
 odata = board.MOSI
 bright = 1.0
 
-data = sys.stdin.readlines() # receive data from node_helper
+data = sys.stdin.readlines()    #to receive data from node_helper
 if data != []:
     data = json.loads(data[0])
 
@@ -255,10 +289,10 @@ if "LEDType" in data and "LEDCount" in data:
         leds = adafruit_ws2801.WS2801(oclock, odata, data["LEDCount"], brightness=bright, auto_write=False)
 
 #Start Effect
-if "options" in data:                                                                                                                                           #is there a defined effect?
-    start_effect(leds, strEffect=data["effect"], strActiveColor=data["activeColor"], arrColors=data["colors"], arrOptions=data["options"])                      #start defined effect
-elif "effect" in data:
-    start_effect(leds, strEffect=data["effect"], strActiveColor=data["activeColor"], arrColors=data["colors"], arrOptions=[""])
+if "options" in data:                                                                                                                           #is there a defined effect with options?
+    start_effect(leds, strEffect=data["effect"], strActiveColor=data["activeColor"], arrColors=data["colors"], arrOptions=data["options"])      #start defined effect with options
+elif "effect" in data:                                                                                                                          #is there a defined effect without options?
+    start_effect(leds, strEffect=data["effect"], strActiveColor=data["activeColor"], arrColors=data["colors"], arrOptions=[""])                 #start defined effect without options
 
 #Reactivate party mode in case it was on before effect
 while data["partyMode"]:
