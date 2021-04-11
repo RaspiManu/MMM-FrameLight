@@ -83,7 +83,7 @@ module.exports = NodeHelper.create({
          */
         function createFileIfMissing() {
             fs.promises
-                .writeFile(presetPath, '', { flag: 'wx' })
+                .writeFile(presetPath, '', { flag: 'w' })
                 .catch((err) => console.log(err));   
         }
 

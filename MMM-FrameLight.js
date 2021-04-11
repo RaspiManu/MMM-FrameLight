@@ -106,20 +106,26 @@ Module.register("MMM-FrameLight", {
 	sendObjectToPy: function(objectToPy) {
 		let d = new Date();
 		let actualHours = d.getHours();
+		let partyMode = false;
 
-		const activeColor = this.config.presets["color" + this.config.activeField];
-
+		let activeColor = this.config.presets["color" + this.config.activeField];
+		
 		function jsonReplaceActiveColor(object, returnString=false) {
 			let objectString = JSON.stringify(object);
 			objectString = objectString.replace(/active color/g, activeColor);
 			return returnString ? objectString: JSON.parse(objectString);
 		}
 
+		if (this.config.presets.state === "on" && this.config.partyMode && this.config.PartyMatrix.length)
+			partyMode = true;
+
+		if (this.config.presets.state === "off") activeColor = "rgb(0,0,0)";
+
 		objectToPy = {
 			...{"LEDType": this.config.LEDType, "LEDCount": this.config.LEDCount}, 
 			...objectToPy,
 			...{"activeColor": activeColor},
-			...{"partyMode": this.config.partyMode},
+			...{"partyMode": partyMode},
 			...{"PartyMatrix": this.config.PartyMatrix}
 		};
 
@@ -221,7 +227,7 @@ Module.register("MMM-FrameLight", {
 		 */
 		function switchPartyMode() {
 			self.config.partyMode = !self.config.partyMode;
-			self.sendObjectToPy({effect: "useless", colors:[]});
+			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 		}
 
 		/**
@@ -282,13 +288,13 @@ Module.register("MMM-FrameLight", {
 
 			if (lightIcon.classList.contains("far")) {
 				lightIcon.className = "fas fa-lightbulb";
-				switchCaption.innerHTML = self.translate("TURNOFF");
+				if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNOFF");
 				self.config.presets.state = "on";
 				jsonPresets.state = "on";
 				self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 			} else {
 				lightIcon.className = "far fa-lightbulb";
-				switchCaption.innerHTML = self.translate("TURNON");
+				if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNON");
 				self.config.presets.state = "off";
 				jsonPresets.state = "off";
 				self.sendObjectToPy({effect: "lightOff", colors:["rgb(0,0,0)"]});
