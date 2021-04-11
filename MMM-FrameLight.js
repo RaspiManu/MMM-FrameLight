@@ -406,10 +406,16 @@ Module.register("MMM-FrameLight", {
 				this.config.presets = JSON.parse(payload);
 
 				let lightIcon = document.getElementById("lightBulb");
+				let switchCaption = document.getElementById("switchCaption");
+
 				if (this.config.presets.state === "on") {
 					lightIcon.className = "fas fa-lightbulb";
+					switchCaption.innerHTML = self.translate("TURNOFF");
+					self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 				} else {
 					lightIcon.className = "far fa-lightbulb";
+					switchCaption.innerHTML = self.translate("TURNON");
+					self.sendObjectToPy({effect: "lightOff", colors:["rgb(0,0,0)"]});
 				}
 			} catch (e) {
 				console.log("error: "+e);

@@ -15,34 +15,44 @@ let {PythonShell} = require('python-shell');
 const pythonScriptName = "/MMM-FrameLight_LED_Control.py";
 const configFile = "/presets/color_presets.JSON";
 
+const options = {
+    mode: 'binary',
+    pythonOptions: ['-u']
+};
+
+let pyshell;
+
 module.exports = NodeHelper.create({
 	start: function () {
 		this.started = true;
 	},
 
     /**
-     * start python script with given params to light up leds
-     * @param {object} object contains params for py
+     * initialize python shell
      */
-    python_start: function (object) {
-        const self = this;
-        
-        let options = {
-            mode: 'binary',
-            pythonOptions: ['-u'],
-            args: [JSON.stringify(object)]
-        };
+    pythonStart: function () {               
+        pyshell = new PythonShell(this.path + pythonScriptName, options);
+    },
 
-        const pyshell = new PythonShell(self.path + pythonScriptName, options);
-               
-        pyshell.on('message', function (message) {
-            console.log(message);
+    /**
+     * stop old shell, initialize new one and send payload to script
+     * @param {object} payload 
+     */
+    pythonSend: function (payload) {
+        this.pythonStop();
+
+        pyshell = new PythonShell(this.path + pythonScriptName, options);
+
+        pyshell.send(JSON.stringify(payload)).end(function(err, code, signal) {
+            if (err) throw err;
         });
-    
-        pyshell.end(function (err) {
-        if (err) throw err;
-          //console.log("[" + self.name + "] " + 'finished running...');
-        });
+    },
+
+    /**
+     * stop python shell
+     */
+    pythonStop: function () {
+        pyshell.kill('SIGTERM');
     },
 
     /**
@@ -56,6 +66,7 @@ module.exports = NodeHelper.create({
 			if (!this.started) {
 				this.config = payload;
 			}
+            this.pythonStart();
 		}
 
 		const presetPath = this.path + configFile;
@@ -104,7 +115,7 @@ module.exports = NodeHelper.create({
 
         if (notification === "sendToPy") {
             // sends payload(sent object) to py
-            this.python_start(payload);
+            this.pythonSend(payload)
         }
 	},
 

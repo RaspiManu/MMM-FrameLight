@@ -244,7 +244,10 @@ from ast import literal_eval as make_tuple
 oclock = board.SCLK
 odata = board.MOSI
 bright = 1.0
-data = json.loads(sys.argv[1]) # receive data from node_helper
+
+data = sys.stdin.readlines() # receive data from node_helper
+if data != []:
+    data = json.loads(data[0])
 
 #Initialise LEDs
 if "LEDType" in data and "LEDCount" in data:
@@ -258,10 +261,9 @@ elif "effect" in data:
     start_effect(leds, strEffect=data["effect"], strActiveColor=data["activeColor"], arrColors=data["colors"], arrOptions=[""])
 
 #Reactivate party mode in case it was on before effect
-if "partyMode" in data:
-    while data["partyMode"] == true:
-        for partyElement in data["PartyMatrix"]:
-            start_effect(leds, strEffect=partyElement["effect"], strActiveColor=data["activeColor"], arrColors=partyElement["colors"], arrOptions=partyElement["options"])
+while data["partyMode"]:
+    for partyElement in data["PartyMatrix"]:
+        start_effect(leds, strEffect=partyElement["effect"], strActiveColor=data["activeColor"], arrColors=partyElement["colors"], arrOptions=partyElement["options"])
 
 #Deinitialise LEDs
 if "effect" in data: # is there a defined effect?
