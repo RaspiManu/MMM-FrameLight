@@ -111,17 +111,18 @@ Module.register("MMM-FrameLight", {
 		let activeColor = this.config.presets["color" + this.config.activeField];
 		
 		function jsonReplaceActiveColor(object, returnString=false) {
+			// replace "active color" string with actual active color
 			let objectString = JSON.stringify(object);
 			objectString = objectString.replace(/active color/g, activeColor);
 			return returnString ? objectString: JSON.parse(objectString);
 		}
 
 		if (this.config.presets.state === "on" && this.config.partyMode && this.config.PartyMatrix.length)
-			partyMode = true;
+			partyMode = true; // only set partyMode to true if LEDs are on
 
-		if (this.config.presets.state === "off") activeColor = "rgb(0,0,0)";
+		if (this.config.presets.state === "off") activeColor = "rgb(0,0,0)"; // let py return to switched off LEDs instead of active color
 
-		objectToPy = {
+		objectToPy = { // construct object for py
 			...{"LEDType": this.config.LEDType, "LEDCount": this.config.LEDCount}, 
 			...objectToPy,
 			...{"activeColor": activeColor},
@@ -130,7 +131,6 @@ Module.register("MMM-FrameLight", {
 		};
 
 		objectToPy = jsonReplaceActiveColor(objectToPy);
-		console.log(objectToPy);
 
 		if (this.config.NightTimeNotifications) {
 			this.sendSocketNotification("sendToPy", objectToPy);
