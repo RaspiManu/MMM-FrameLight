@@ -3,7 +3,7 @@
  *
  * By RaspiManu & ViatorisBaculum
  * https://github.com/RaspiManu/MMM-FrameLight
- * MIT Licensed.
+ * MPL-2.0 licensed
  */
 'use strict';
 let NodeHelper = require("node_helper");
