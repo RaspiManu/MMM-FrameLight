@@ -199,14 +199,14 @@ def wobbling_segments(leds, color1=(0,0,0), color2=(255,0,0), cycles=2, time_per
     leds.show()
     #Effect loop
     for k in range(cycles):
-        #from start to end of LED strip
+        #wobble towards the end of LED strip
         for l in range(wobble_steps):
             for m in range(0,segments_fit,2):
                 leds[l+m*segment_length_fit+segment_length_fit] = color_moving
                 leds[l+m*segment_length_fit] = color_background
             leds.show()
             time.sleep(time_per_step)
-        #from end back to start of LED strip
+        #wobble towards the start of LED strip
         for n in reversed(range(wobble_steps)):
             for o in range(0,segments_fit,2):
                 leds[n+o*segment_length_fit+segment_length_fit] = color_background
