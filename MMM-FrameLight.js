@@ -349,7 +349,7 @@ Module.register("MMM-FrameLight", {
 				borderColor: "#ffffff",
 				padding: 2,
 				wheelLightness: false,
-				wheelAngle: -15,
+				wheelAngle: 0,
 				wheelDirection: 'anticlockwise',
 				layoutDirection: 'vertical',
 				transparency: true,
