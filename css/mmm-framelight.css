@@ -43,6 +43,9 @@ html {
 .fa-lightbulb:before {
 	vertical-align: middle;
 }
+#switchCaption {
+	display: inline-block;
+}
 #sMenu {
 	background: #000000;
 	color: #ffffff;

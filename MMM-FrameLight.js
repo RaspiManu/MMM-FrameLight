@@ -406,13 +406,28 @@ Module.register("MMM-FrameLight", {
 	 * @param {string} payload json string
 	 */
 	socketNotificationReceived: function (notification, payload) {
-		let self = this;
+		const self = this;
+
+		function setCaptionWidth(captionObject) {
+			// switch caption to compare the width of the captions
+			let width = 0;
+			const bufferHTML = captionObject.innerHTML;
+
+			captionObject.innerHTML = self.translate("TURNON");
+			width = captionObject.clientWidth;
+			captionObject.innerHTML = self.translate("TURNOFF");
+			width = width > captionObject.clientWidth ? width : captionObject.clientWidth;
+
+			captionObject.innerHTML = bufferHTML;
+			captionObject.style.width = width + 1 + "px";
+		}
+
 		if (notification === "ledPresets") {
 			try {
 				this.config.presets = JSON.parse(payload);
 
-				let lightIcon = document.getElementById("lightBulb");
-				let switchCaption = document.getElementById("switchCaption");
+				const lightIcon = document.getElementById("lightBulb");
+				const switchCaption = document.getElementById("switchCaption");
 
 				if (this.config.presets.state === "on") {
 					lightIcon.className = "fas fa-lightbulb";
@@ -423,6 +438,7 @@ Module.register("MMM-FrameLight", {
 					switchCaption.innerHTML = self.translate("TURNON");
 					self.sendObjectToPy({effect: "lightOff", colors:["rgb(0,0,0)"]});
 				}
+				setCaptionWidth(switchCaption);
 			} catch (e) {
 				console.log("error: "+e);
 				this.sendSocketNotification("createJSON", {});
