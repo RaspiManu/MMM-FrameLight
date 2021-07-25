@@ -458,10 +458,37 @@ Module.register("MMM-FrameLight", {
 		
 		// for each configured notification send specified effect to py
 		self.config.Notifications.forEach((nFication) => {
-			if (nFication.name == notification) {
+			if (nFication.name === notification) {
 				self.sendObjectToPy(nFication);
 			}
 		});
+
+		let lightIcon = document.getElementById("lightBulb");
+		let switchCaption = document.getElementById("switchCaption");
+		if(notification === 'FRAMELIGHT_ON') {
+			lightIcon.className = "fas fa-lightbulb";
+			if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNOFF");
+			self.config.presets.state = "on";
+			jsonPresets.state = "on";
+			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
+		}
+		if(notification === 'FRAMELIGHT_OFF') {
+			lightIcon.className = "far fa-lightbulb";
+			if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNON");
+			self.config.presets.state = "off";
+			jsonPresets.state = "off";
+			self.sendObjectToPy({effect: "lightOff", colors:["rgb(0,0,0)"]});
+		}
+		if(notification === 'FRAMELIGHT_PARTY_ON') {
+			self.switchPartyMode();
+		}
+		if(notification === 'FRAMELIGHT_PARTY_OFF') {
+			self.switchPartyMode();
+		}
+		if(notification === 'FRAMELIGHT_PRESET') {
+			self.setColor(payload);
+		}
+
 	}
 
 });
