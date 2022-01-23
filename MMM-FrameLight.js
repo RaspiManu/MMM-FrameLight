@@ -482,21 +482,28 @@ Module.register("MMM-FrameLight", {
 		}
 		if(notification === 'FRAMELIGHT_PARTY_ON') {
 			self.config.partyMode = true;
+			let lightIcon = document.getElementById("lightBulb");
+			let switchCaption = document.getElementById("switchCaption");
 
 			lightIcon.className = "fas fa-lightbulb";
 			if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNOFF");
 			self.config.presets.state = "on";
-			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
-
+			jsonPresets.state = "on";
 			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 		}
 		if(notification === 'FRAMELIGHT_PARTY_OFF') {
 			self.config.partyMode = false;
-			switchLights(self.config.presets, 1);
-			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
+			let lightIcon = document.getElementById("lightBulb");
+			let switchCaption = document.getElementById("switchCaption");
+
+			lightIcon.className = "far fa-lightbulb";
+			if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNON");
+			self.config.presets.state = "off";
+			jsonPresets.state = "off";
+			self.sendObjectToPy({effect: "lightOff", colors:["rgb(0,0,0)"]});
 		}
 		if(notification === 'FRAMELIGHT_PRESET') {
-			colorIndex = payload[0]['colorIndex'];
+			colorIndex = payload['preset'];
 			self.config.activeField = colorIndex;
 			self.config.presets.activePreset = colorIndex;
 	
