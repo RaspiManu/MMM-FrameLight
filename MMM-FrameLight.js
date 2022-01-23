@@ -227,6 +227,7 @@ Module.register("MMM-FrameLight", {
 		 */
 		function switchPartyMode() {
 			self.config.partyMode = !self.config.partyMode;
+			switchLights(self.config.presets, 1);
 			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 		}
 
@@ -282,17 +283,19 @@ Module.register("MMM-FrameLight", {
 		 * changes lightbulb icon and sends light signal to py depending on state
 		 * @param {object} jsonPresets color object from preset json 
 		 */
-		function switchLights(jsonPresets) { 
+		function switchLights(jsonPresets, state = 2) { 
 			let lightIcon = document.getElementById("lightBulb");
 			let switchCaption = document.getElementById("switchCaption");
 
-			if (lightIcon.classList.contains("far")) {
+			if (lightIcon.classList.contains("far") && state != 0) {
+				state = 1;
 				lightIcon.className = "fas fa-lightbulb";
 				if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNOFF");
 				self.config.presets.state = "on";
 				jsonPresets.state = "on";
 				self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
-			} else {
+			}
+			if (lightIcon.classList.contains("fas") && state != 1) {
 				lightIcon.className = "far fa-lightbulb";
 				if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNON");
 				self.config.presets.state = "off";
@@ -454,7 +457,7 @@ Module.register("MMM-FrameLight", {
 	 * @param {string} sender 
 	 */
 	notificationReceived: function(notification, payload, sender) {
-		let self = this;
+		const self = this;
 		
 		// for each configured notification send specified effect to py
 		self.config.Notifications.forEach((nFication) => {
@@ -469,24 +472,35 @@ Module.register("MMM-FrameLight", {
 			lightIcon.className = "fas fa-lightbulb";
 			if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNOFF");
 			self.config.presets.state = "on";
-			jsonPresets.state = "on";
 			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 		}
 		if(notification === 'FRAMELIGHT_OFF') {
 			lightIcon.className = "far fa-lightbulb";
 			if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNON");
 			self.config.presets.state = "off";
-			jsonPresets.state = "off";
 			self.sendObjectToPy({effect: "lightOff", colors:["rgb(0,0,0)"]});
 		}
 		if(notification === 'FRAMELIGHT_PARTY_ON') {
-			self.switchPartyMode();
+			self.config.partyMode = true;
+
+			lightIcon.className = "fas fa-lightbulb";
+			if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNOFF");
+			self.config.presets.state = "on";
+			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
+
+			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 		}
 		if(notification === 'FRAMELIGHT_PARTY_OFF') {
-			self.switchPartyMode();
+			self.config.partyMode = false;
+			switchLights(self.config.presets, 1);
+			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 		}
 		if(notification === 'FRAMELIGHT_PRESET') {
-			self.setColor(payload);
+			colorIndex = payload[0]['colorIndex'];
+			self.config.activeField = colorIndex;
+			self.config.presets.activePreset = colorIndex;
+	
+			self.sendObjectToPy({effect: "setColor", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 		}
 
 	}
