@@ -169,7 +169,7 @@ Module.register("MMM-FrameLight", {
 		else
 			settingDiv.innerHTML = '<a class="fas fa-sliders-h"></a>';
 		wrapper.appendChild(settingDiv);
-		settingDiv.addEventListener("click", () => openSettings(this.config.presets));
+		settingDiv.addEventListener("click", () => openSettings(this.config.presets, this));
 
 		//Settings Menu
 		let settingMenu = document.createElement("div");
@@ -247,8 +247,8 @@ Module.register("MMM-FrameLight", {
 		 * opens settings menu and sets color list
 		 * @param {object} jsonPresets color object from preset json 
 		 */
-		function openSettings(jsonPresets) {
-			const self = this;
+		function openSettings(jsonPresets, self) {
+			//const self = this;
 
 			let colorWheel = document.getElementById("colorWheel").children[0];
 			if (!colorWheel) { // create color wheel and pass current color
@@ -258,7 +258,7 @@ Module.register("MMM-FrameLight", {
 			let sMenu = document.getElementById("sMenu");
 			if (sMenu.classList.contains("hidden")) { // show when hidden and change colorlist presets
 				if (jsonPresets.state === "off") // activate lightbulb when settings menu opens
-					() => self.switchLights(self.config.presets);
+					self.switchLights(jsonPresets);
 
 				sMenu.className = "settingsMenu";
 
@@ -266,7 +266,7 @@ Module.register("MMM-FrameLight", {
 					document.getElementById("colorField" + i).style.backgroundColor = jsonPresets["color" + i];
 				}
 
-				() => self.setColor(self.config.presets.activePreset); // set active color for color wheel
+				self.setColor(jsonPresets.activePreset); // set active color for color wheel
 			} else {
 				sMenu.className = "settingsMenu hidden"; 
 			}
