@@ -407,10 +407,17 @@ Module.register("MMM-FrameLight", {
 	switchPartyMode: function(turnOn) {
 		const self = this;
 
-		if(turnOn === undefined)
+		if(turnOn === undefined) {
 			self.config.partyMode = !self.config.partyMode;
-		else
-			self.config.partyMode = turnOn
+		} else if (turnOn === true) {
+			if (partyModeCheckBox = document.getElementById("switch")) // switch partymode checkbox
+				partyModeCheckBox.checked = true;
+			self.config.partyMode = true;
+		} else if (turnOn === false) {
+			if (partyModeCheckBox = document.getElementById("switch")) // switch partymode checkbox
+				partyModeCheckBox.checked = false;
+			self.config.partyMode = true;
+		}
 			
 		self.switchLights(self.config.presets, true);
 		self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
