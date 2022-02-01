@@ -37,18 +37,18 @@ Module.register("MMM-FrameLight", {
 		NightTimeEnd: 6,
 		NightTimeNotifications: true,
 		Notifications: [{}],
-		PartyMatrix: [{}],
+		PartyMatrix: [{}]
 	},
 
 	getStyles: function () {
-		return [this.file('css/mmm-framelight.css'), 'font-awesome.css'];
+		return [this.file("css/mmm-framelight.css"), "font-awesome.css"];
 	},
 
 	start: function () {
 		// get json config from file
 		this.sendSocketNotification("openJSON", {});
 		// initialize this.config
-		this.sendSocketNotification('CONFIG', this.config);
+		this.sendSocketNotification("CONFIG", this.config);
 	},
 
 	/**
@@ -67,9 +67,7 @@ Module.register("MMM-FrameLight", {
 	 * Load script files
 	 */
 	getScripts: function () {
-		return [
-			"color_picker.js"
-		]
+		return ["color_picker.js"];
 	},
 
 	/**
@@ -87,10 +85,10 @@ Module.register("MMM-FrameLight", {
 	 * cycle through config color array and substitute "active color"-string
 	 * @param {array} colors contains an array of rgb strings, can contain "active color"
 	 */
-	getActiveColor: function(colors) {
-		let retColor = colors.map(colorString => {
+	getActiveColor: function (colors) {
+		let retColor = colors.map((colorString) => {
 			if (colorString.trim() != "active color") {
-				return colorString;				
+				return colorString;
 			} else {
 				return this.config.presets["color" + this.config.presets.activePreset];
 			}
@@ -103,18 +101,18 @@ Module.register("MMM-FrameLight", {
 	 * sends ledtype, ledcount, activecolor, partymode and given object to py
 	 * @param {object} objectToPy object containing "effect"(string) and "colors"(array of string)
 	 */
-	sendObjectToPy: function(objectToPy) {
+	sendObjectToPy: function (objectToPy) {
 		let d = new Date();
 		let actualHours = d.getHours();
 		let partyMode = false;
 
 		let activeColor = this.config.presets["color" + this.config.activeField];
-		
-		function jsonReplaceActiveColor(object, returnString=false) {
+
+		function jsonReplaceActiveColor(object, returnString = false) {
 			// replace "active color" string with actual active color
 			let objectString = JSON.stringify(object);
 			objectString = objectString.replace(/active color/g, activeColor);
-			return returnString ? objectString: JSON.parse(objectString);
+			return returnString ? objectString : JSON.parse(objectString);
 		}
 
 		if (this.config.presets.state === "on" && this.config.partyMode && this.config.PartyMatrix.length)
@@ -122,12 +120,13 @@ Module.register("MMM-FrameLight", {
 
 		if (this.config.presets.state === "off") activeColor = "rgb(0,0,0)"; // let py return to switched off LEDs instead of active color
 
-		objectToPy = { // construct object for py
-			...{"LEDType": this.config.LEDType, "LEDCount": this.config.LEDCount}, 
+		objectToPy = {
+			// construct object for py
+			...{ LEDType: this.config.LEDType, LEDCount: this.config.LEDCount },
 			...objectToPy,
-			...{"activeColor": activeColor},
-			...{"partyMode": partyMode},
-			...{"PartyMatrix": this.config.PartyMatrix}
+			...{ activeColor: activeColor },
+			...{ partyMode: partyMode },
+			...{ PartyMatrix: this.config.PartyMatrix }
 		};
 
 		objectToPy = jsonReplaceActiveColor(objectToPy);
@@ -136,7 +135,7 @@ Module.register("MMM-FrameLight", {
 			this.sendSocketNotification("sendToPy", objectToPy);
 			this.sendSocketNotification("saveJSON", JSON.stringify(this.config.presets, null, 2));
 		} else {
-			if ((actualHours >= this.config.NightTimeEnd) && (actualHours <= this.config.NightTimeStart)) {
+			if (actualHours >= this.config.NightTimeEnd && actualHours <= this.config.NightTimeStart) {
 				this.sendSocketNotification("sendToPy", objectToPy);
 				this.sendSocketNotification("saveJSON", JSON.stringify(this.config.presets, null, 2));
 			}
@@ -153,28 +152,28 @@ Module.register("MMM-FrameLight", {
 
 		//Light Button
 		let lightbulb = document.createElement("div");
-		lightbulb.className = 'controls';
-		if (this.config.ShowCaptions) 
-			lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"><span id="switchCaption" class="btnCaption"></span></a>';
-		else
-			lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"></a>';
+		lightbulb.className = "controls";
+		if (this.config.ShowCaptions)
+			lightbulb.innerHTML =
+				'<a class="fas fa-lightbulb" id="lightBulb"><span id="switchCaption" class="btnCaption"></span></a>';
+		else lightbulb.innerHTML = '<a class="fas fa-lightbulb" id="lightBulb"></a>';
 		wrapper.appendChild(lightbulb);
 		lightbulb.addEventListener("click", () => self.switchLights(this.config.presets));
 
 		//Setting Button
 		let settingDiv = document.createElement("div");
-		settingDiv.className = 'controls';
-		if (this.config.ShowCaptions) 
-			settingDiv.innerHTML = '<a class="fas fa-sliders-h"><span class="btnCaption">' + this.translate("SETTINGS") + '</span></a>';
-		else
-			settingDiv.innerHTML = '<a class="fas fa-sliders-h"></a>';
+		settingDiv.className = "controls";
+		if (this.config.ShowCaptions)
+			settingDiv.innerHTML =
+				'<a class="fas fa-sliders-h"><span class="btnCaption">' + this.translate("SETTINGS") + "</span></a>";
+		else settingDiv.innerHTML = '<a class="fas fa-sliders-h"></a>';
 		wrapper.appendChild(settingDiv);
 		settingDiv.addEventListener("click", () => openSettings(this.config.presets, this));
 
 		//Settings Menu
 		let settingMenu = document.createElement("div");
-		settingMenu.className = 'settingsMenu hidden';
-		settingMenu.id = 'sMenu';
+		settingMenu.className = "settingsMenu hidden";
+		settingMenu.id = "sMenu";
 
 		// --> ColorWheel
 		settingMenu.innerHTML = `
@@ -203,13 +202,14 @@ Module.register("MMM-FrameLight", {
 		</div>`;
 		wrapper.appendChild(settingMenu);
 
-
-		setTimeout(() => { // wait for dom and add event listener
-			if (self.config.ShowPartyMode === false) { // hide PartyMode if set to "false"
-				document.getElementById('party').style.display = 'none';
+		setTimeout(() => {
+			// wait for dom and add event listener
+			if (self.config.ShowPartyMode === false) {
+				// hide PartyMode if set to "false"
+				document.getElementById("party").style.display = "none";
 				return;
 			}
-		
+
 			//partyMode event handler
 			let partyModeCheckBox = document.getElementById("switch");
 			partyModeCheckBox.addEventListener("click", () => self.switchPartyMode());
@@ -217,23 +217,23 @@ Module.register("MMM-FrameLight", {
 
 		// function to fill a number with zeros
 		function padZeros(n, width, z) {
-			z = z || '0';
-			n = n + '';
+			z = z || "0";
+			n = n + "";
 			return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 		}
 
 		/**
 		 * get RGB values from RGB string | returns rgb array
-		 * @param {string} rgb 
+		 * @param {string} rgb
 		 */
 		function getRGB(rgb) {
-			rgb = rgb.replace(/[^\d,]/g, '').split(',');
-			return rgb; 
+			rgb = rgb.replace(/[^\d,]/g, "").split(",");
+			return rgb;
 		}
 
 		/**
 		 * split RGB values onto the text fields
-		 * @param {string} rgb 
+		 * @param {string} rgb
 		 */
 		function splitRGB(rgb) {
 			rgb = getRGB(rgb);
@@ -245,19 +245,22 @@ Module.register("MMM-FrameLight", {
 
 		/**
 		 * opens settings menu and sets color list
-		 * @param {object} jsonPresets color object from preset json 
+		 * @param {object} jsonPresets color object from preset json
 		 */
 		function openSettings(jsonPresets, self) {
 			//const self = this;
 
 			let colorWheel = document.getElementById("colorWheel").children[0];
-			if (!colorWheel) { // create color wheel and pass current color
+			if (!colorWheel) {
+				// create color wheel and pass current color
 				startColorScript(jsonPresets["color" + jsonPresets.activePreset]);
 			}
 
 			let sMenu = document.getElementById("sMenu");
-			if (sMenu.classList.contains("hidden")) { // show when hidden and change colorlist presets
-				if (jsonPresets.state === "off") // activate lightbulb when settings menu opens
+			if (sMenu.classList.contains("hidden")) {
+				// show when hidden and change colorlist presets
+				if (jsonPresets.state === "off")
+					// activate lightbulb when settings menu opens
 					self.switchLights(jsonPresets);
 
 				sMenu.className = "settingsMenu";
@@ -268,7 +271,7 @@ Module.register("MMM-FrameLight", {
 
 				self.setColor(jsonPresets.activePreset); // set active color for color wheel
 			} else {
-				sMenu.className = "settingsMenu hidden"; 
+				sMenu.className = "settingsMenu hidden";
 			}
 		}
 
@@ -291,10 +294,11 @@ Module.register("MMM-FrameLight", {
 				padding: 2,
 				wheelLightness: false,
 				wheelAngle: 0,
-				wheelDirection: 'anticlockwise',
-				layoutDirection: 'vertical',
+				wheelDirection: "anticlockwise",
+				layoutDirection: "vertical",
 				transparency: true,
-				layout: [{
+				layout: [
+					{
 						component: iro.ui.Wheel,
 						options: {
 							//borderColor: '#8d8d8d'
@@ -305,12 +309,12 @@ Module.register("MMM-FrameLight", {
 						options: {
 							//borderColor: '#8d8d8d'
 						},
-						sliderType: 'value'
+						sliderType: "value"
 					},
-					{ 
+					{
 						component: iro.ui.Box,
 						options: {}
-					},
+					}
 				]
 			});
 
@@ -318,18 +322,21 @@ Module.register("MMM-FrameLight", {
 			for (let i = 0; i <= 9; i++) {
 				let li = document.createElement("li");
 				li.setAttribute("id", "colorField" + i);
-				li.addEventListener( 'click', () => self.setColor(i));
+				li.addEventListener("click", () => self.setColor(i));
 				colorList.appendChild(li);
 			}
 
 			colorPicker.on(["mount", "color:change"], function () {
-				colorPicker.colors.forEach(color => {
+				colorPicker.colors.forEach((color) => {
 					const activeField = self.config.activeField;
 					const rgbString = color.rgbString;
 
 					self.config.presets["color" + activeField] = rgbString;
 
-					self.sendObjectToPy({effect: "setColor", colors:[color.rgbString]});
+					self.sendObjectToPy({
+						effect: "setColor",
+						colors: [color.rgbString]
+					});
 
 					colorField = document.getElementById("colorField" + activeField);
 					colorField.style.background = rgbString;
@@ -343,9 +350,9 @@ Module.register("MMM-FrameLight", {
 
 	/**
 	 * sets active color for color wheel and list
-	 * @param {int} colorIndex 
+	 * @param {int} colorIndex
 	 */
-	setColor: function(colorIndex) {
+	setColor: function (colorIndex) {
 		const self = this;
 
 		self.config.activeField = colorIndex;
@@ -353,12 +360,12 @@ Module.register("MMM-FrameLight", {
 
 		// get RGB values from RGB string
 		function getRGB(rgb) {
-			rgb = rgb.replace(/[^\d,]/g, '').split(',');
+			rgb = rgb.replace(/[^\d,]/g, "").split(",");
 			return rgb;
 		}
 
 		if (document.getElementById("colorField" + colorIndex) != null) {
-					// set RGB-Text to active
+			// set RGB-Text to active
 			bgColor = getRGB(document.getElementById("colorField" + colorIndex).style.backgroundColor);
 			colorPicker.color.red = bgColor[0];
 			colorPicker.color.green = bgColor[1];
@@ -371,32 +378,38 @@ Module.register("MMM-FrameLight", {
 			// only change size of active item
 			document.getElementById("colorField" + colorIndex).style.transform = "scale(1.2)";
 
-			self.sendObjectToPy({effect: "setColor", colors:[colorPicker.color.rgbString]});	
+			self.sendObjectToPy({
+				effect: "setColor",
+				colors: [colorPicker.color.rgbString]
+			});
 		}
 	},
 
 	/**
 	 * changes lightbulb icon and sends light signal to py depending on state
-	 * @param {object} jsonPresets color object from preset json 
-	 * @param {object} turnOn color object from preset json 
+	 * @param {object} jsonPresets color object from preset json
+	 * @param {object} turnOn color object from preset json
 	 */
-	switchLights: function(jsonPresets, turnOn = undefined) {
+	switchLights: function (jsonPresets, turnOn = undefined) {
 		const self = this;
 		let lightIcon = document.getElementById("lightBulb");
 		let switchCaption = document.getElementById("switchCaption");
 
 		if (lightIcon.classList.contains("fas") && turnOn !== true) {
 			lightIcon.className = "far fa-lightbulb"; // far = off
-			if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNON");
+			if (switchCaption != null) switchCaption.innerHTML = self.translate("TURNON");
 			self.config.presets.state = "off";
 			jsonPresets.state = "off";
-			self.sendObjectToPy({effect: "lightOff", colors:["rgb(0,0,0)"]});
+			self.sendObjectToPy({ effect: "lightOff", colors: ["rgb(0,0,0)"] });
 		} else if (lightIcon.classList.contains("far") && turnOn !== false) {
 			lightIcon.className = "fas fa-lightbulb"; // fas = on
-			if(switchCaption != null) switchCaption.innerHTML = self.translate("TURNOFF");
+			if (switchCaption != null) switchCaption.innerHTML = self.translate("TURNOFF");
 			self.config.presets.state = "on";
 			jsonPresets.state = "on";
-			self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
+			self.sendObjectToPy({
+				effect: "lightOn",
+				colors: [self.config.presets["color" + self.config.presets.activePreset]]
+			});
 		}
 	},
 
@@ -404,28 +417,31 @@ Module.register("MMM-FrameLight", {
 	 * switch config.partyMode and send to py
 	 * @param {boolean} turnOn needs a fixed state when called withing API block
 	 */
-	switchPartyMode: function(turnOn) {
+	switchPartyMode: function (turnOn) {
 		const self = this;
 
-		if(turnOn === undefined) {
+		if (turnOn === undefined) {
 			self.config.partyMode = !self.config.partyMode;
+			self.switchLights(self.config.presets, true);
 		} else if (turnOn === true) {
-			if (partyModeCheckBox = document.getElementById("switch")) // switch partymode checkbox
+			if ((partyModeCheckBox = document.getElementById("switch"))) {
+				// switch partymode checkbox
 				partyModeCheckBox.checked = true;
+			}
 			self.config.partyMode = true;
+			self.switchLights(self.config.presets, turnOn);
 		} else if (turnOn === false) {
-			if (partyModeCheckBox = document.getElementById("switch")) // switch partymode checkbox
+			if ((partyModeCheckBox = document.getElementById("switch"))) {
 				partyModeCheckBox.checked = false;
-			self.config.partyMode = true;
+			}
+			self.config.partyMode = false;
+			self.switchLights(self.config.presets, turnOn);
 		}
-			
-		self.switchLights(self.config.presets, true);
-		self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
 	},
 
 	/**
 	 * communicates with node_helper.js
-	 * @param {string} notification 
+	 * @param {string} notification
 	 * @param {string} payload json string
 	 */
 	socketNotificationReceived: function (notification, payload) {
@@ -455,28 +471,34 @@ Module.register("MMM-FrameLight", {
 				if (this.config.presets.state === "on") {
 					lightIcon.className = "fas fa-lightbulb";
 					switchCaption.innerHTML = self.translate("TURNOFF");
-					self.sendObjectToPy({effect: "lightOn", colors:[self.config.presets["color" + self.config.presets.activePreset]]});
+					self.sendObjectToPy({
+						effect: "lightOn",
+						colors: [self.config.presets["color" + self.config.presets.activePreset]]
+					});
 				} else {
 					lightIcon.className = "far fa-lightbulb";
 					switchCaption.innerHTML = self.translate("TURNON");
-					self.sendObjectToPy({effect: "lightOff", colors:["rgb(0,0,0)"]});
+					self.sendObjectToPy({
+						effect: "lightOff",
+						colors: ["rgb(0,0,0)"]
+					});
 				}
 				setCaptionWidth(switchCaption);
 			} catch (e) {
-				console.log("error: "+e);
+				console.log("error: " + e);
 				this.sendSocketNotification("createJSON", {});
-			};
+			}
 		}
 		this.loaded();
 	},
 
 	/**
 	 * checking configured notifications | when notification is recognized effect object will be created and sent to py
-	 * @param {string} notification 
-	 * @param {string} payload 
-	 * @param {string} sender 
+	 * @param {string} notification
+	 * @param {string} payload
+	 * @param {string} sender
 	 */
-	notificationReceived: function(notification, payload, sender) {
+	notificationReceived: function (notification, payload, sender) {
 		const self = this;
 
 		// for each configured notification send specified effect to py
@@ -487,23 +509,22 @@ Module.register("MMM-FrameLight", {
 		});
 
 		switch (notification) {
-			case 'FRAMELIGHT_ON':
+			case "FRAMELIGHT_ON":
 				self.switchLights(self.config.presets, true);
 				break;
-			case 'FRAMELIGHT_OFF':
+			case "FRAMELIGHT_OFF":
 				self.switchLights(self.config.presets, false);
-			break;
-			case 'FRAMELIGHT_PARTY_ON':
+				break;
+			case "FRAMELIGHT_PARTY_ON":
 				self.switchPartyMode(true);
 				break;
-			case 'FRAMELIGHT_PARTY_OFF':
+			case "FRAMELIGHT_PARTY_OFF":
 				self.switchPartyMode(false);
 				break;
-			case 'FRAMELIGHT_PRESET':
-				colorIndex = payload['preset'] || 0;	
+			case "FRAMELIGHT_PRESET":
+				colorIndex = payload["preset"] || 0;
 				self.setColor(colorIndex);
 				break;
 		}
 	}
-
 });
