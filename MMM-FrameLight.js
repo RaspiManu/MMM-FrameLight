@@ -397,13 +397,17 @@ Module.register("MMM-FrameLight", {
 
 		if (lightIcon.classList.contains("fas") && turnOn !== true) {
 			lightIcon.className = "far fa-lightbulb"; // far = off
-			if (switchCaption != null) switchCaption.innerHTML = self.translate("TURNON");
+			if (switchCaption != null) {
+				switchCaption.innerHTML = self.translate("TURNON");
+			}
 			self.config.presets.state = "off";
 			jsonPresets.state = "off";
 			self.sendObjectToPy({ effect: "lightOff", colors: ["rgb(0,0,0)"] });
 		} else if (lightIcon.classList.contains("far") && turnOn !== false) {
 			lightIcon.className = "fas fa-lightbulb"; // fas = on
-			if (switchCaption != null) switchCaption.innerHTML = self.translate("TURNOFF");
+			if (switchCaption != null) {
+				switchCaption.innerHTML = self.translate("TURNOFF");
+			}
 			self.config.presets.state = "on";
 			jsonPresets.state = "on";
 			self.sendObjectToPy({
@@ -422,20 +426,16 @@ Module.register("MMM-FrameLight", {
 
 		if (turnOn === undefined) {
 			self.config.partyMode = !self.config.partyMode;
-			self.switchLights(self.config.presets, true);
-		} else if (turnOn === true) {
-			if ((partyModeCheckBox = document.getElementById("switch"))) {
-				// switch partymode checkbox
-				partyModeCheckBox.checked = true;
-			}
-			self.config.partyMode = true;
-			self.switchLights(self.config.presets, turnOn);
-		} else if (turnOn === false) {
-			if ((partyModeCheckBox = document.getElementById("switch"))) {
-				partyModeCheckBox.checked = false;
-			}
-			self.config.partyMode = false;
-			self.switchLights(self.config.presets, turnOn);
+			turnOn = true;
+		} else {
+			self.config.partyMode = turnOn;
+		}
+
+		self.switchLights(self.config.presets, turnOn);
+
+		partyModeCheckBox = document.getElementById("switch");
+		if (partyModeCheckBox) {
+			partyModeCheckBox.checked = self.config.partyMode;
 		}
 	},
 
