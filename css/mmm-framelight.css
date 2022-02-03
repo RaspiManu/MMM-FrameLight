@@ -69,7 +69,7 @@ html {
 	transform: translate(-50%, -50%);
 
 	z-index: 1;
-	transition: all 1s ease;
+	transition: all 1s ease-in-out;
 }
 #party > p {
 	float: left;
@@ -88,7 +88,7 @@ html {
 	left: 28.5em;
 
 	z-index: -2;
-	transition: z-index 1s ease;
+	transition: all 1s ease-in-out;
 }
 #colorWheel {
 	width: fit-content;
