@@ -381,6 +381,8 @@ Module.register("MMM-FrameLight", {
 				effect: "setColor",
 				colors: [colorPicker.color.rgbString]
 			});
+
+			self.switchLights(self.config.presets, true);
 		}
 	},
 
