@@ -394,7 +394,7 @@ Module.register("MMM-FrameLight", {
 		let lightIcon = document.getElementById("lightBulb");
 		let switchCaption = document.getElementById("switchCaption");
 
-		if (lightIcon.classList.contains("fas") || turnOn === false) {
+		if ((lightIcon.classList.contains("fas") && turnOn === undefined) || turnOn === false) {
 			lightIcon.className = "far fa-lightbulb"; // far = off
 			if (switchCaption != null) {
 				switchCaption.innerHTML = self.translate("TURNON");
@@ -402,7 +402,7 @@ Module.register("MMM-FrameLight", {
 			self.config.presets.state = "off";
 			jsonPresets.state = "off";
 			self.sendObjectToPy({ effect: "lightOff", colors: ["rgb(0,0,0)"] });
-		} else if (lightIcon.classList.contains("far") || turnOn === true) {
+		} else if ((lightIcon.classList.contains("far") && turnOn === undefined) || turnOn === true) {
 			lightIcon.className = "fas fa-lightbulb"; // fas = on
 			if (switchCaption != null) {
 				switchCaption.innerHTML = self.translate("TURNOFF");
