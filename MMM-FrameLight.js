@@ -246,10 +246,9 @@ Module.register("MMM-FrameLight", {
 		/**
 		 * opens settings menu and sets color list
 		 * @param {object} jsonPresets color object from preset json
+		 * @param {object} self equals global this to be able to call global functions
 		 */
 		function openSettings(jsonPresets, self) {
-			//const self = this;
-
 			let colorWheel = document.getElementById("colorWheel").children[0];
 			if (!colorWheel) {
 				// create color wheel and pass current color
@@ -395,7 +394,7 @@ Module.register("MMM-FrameLight", {
 		let lightIcon = document.getElementById("lightBulb");
 		let switchCaption = document.getElementById("switchCaption");
 
-		if (lightIcon.classList.contains("fas") && turnOn !== true) {
+		if (lightIcon.classList.contains("fas") || turnOn === false) {
 			lightIcon.className = "far fa-lightbulb"; // far = off
 			if (switchCaption != null) {
 				switchCaption.innerHTML = self.translate("TURNON");
@@ -403,7 +402,7 @@ Module.register("MMM-FrameLight", {
 			self.config.presets.state = "off";
 			jsonPresets.state = "off";
 			self.sendObjectToPy({ effect: "lightOff", colors: ["rgb(0,0,0)"] });
-		} else if (lightIcon.classList.contains("far") && turnOn !== false) {
+		} else if (lightIcon.classList.contains("far") || turnOn === true) {
 			lightIcon.className = "fas fa-lightbulb"; // fas = on
 			if (switchCaption != null) {
 				switchCaption.innerHTML = self.translate("TURNOFF");
