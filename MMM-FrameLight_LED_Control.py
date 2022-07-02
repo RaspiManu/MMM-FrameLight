@@ -61,7 +61,7 @@ def rainbow_cycle_successive(leds, color1=(0,0,0), cycles = 2, time_per_step=0.0
             time.sleep(time_per_step)
 
     # set color to original color
-    set_color(leds, color1=create_tuple(arrColors[0]))
+    set_color(leds, color1)
 
 #Name:          Rainbow Cycle
 #Description:   lets all rainbow colors spin around at once
