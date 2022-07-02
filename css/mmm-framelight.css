@@ -37,6 +37,12 @@ html {
 	font-weight: 200;
 	font-size: 0.7em;
 }
+.topLeft {
+	float: left;
+}
+.topLeft:nth-child(2) {
+	margin-left: 0.2em;
+}
 .ledContainer > div > a {
 	vertical-align: middle;
 	display: contents;

@@ -59,6 +59,12 @@ Module.register("MMM-FrameLight", {
 			this.hide();
 		}
 
+		if (this.data.position === "top_left" || this.data.position === "bottom_left") {
+			let controlsTopLeft = document.getElementsByClassName("controls");
+			controlsTopLeft[0].className = "controls topLeft";
+			controlsTopLeft[1].className = "controls topLeft";
+		}
+
 		// copy activePreset from json to activeField
 		this.config.activeField = this.config.presets.activePreset;
 	},
@@ -102,8 +108,6 @@ Module.register("MMM-FrameLight", {
 	 * @param {object} objectToPy object containing "effect"(string) and "colors"(array of string)
 	 */
 	sendObjectToPy: function (objectToPy) {
-		let d = new Date();
-		let actualHours = d.getHours();
 		let partyMode = false;
 
 		let activeColor = this.config.presets["color" + this.config.activeField];
@@ -131,15 +135,8 @@ Module.register("MMM-FrameLight", {
 
 		objectToPy = jsonReplaceActiveColor(objectToPy);
 
-		if (this.config.NightTimeNotifications) {
-			this.sendSocketNotification("sendToPy", objectToPy);
-			this.sendSocketNotification("saveJSON", JSON.stringify(this.config.presets, null, 2));
-		} else {
-			if (actualHours >= this.config.NightTimeEnd && actualHours <= this.config.NightTimeStart) {
-				this.sendSocketNotification("sendToPy", objectToPy);
-				this.sendSocketNotification("saveJSON", JSON.stringify(this.config.presets, null, 2));
-			}
-		}
+		this.sendSocketNotification("sendToPy", objectToPy);
+		this.sendSocketNotification("saveJSON", JSON.stringify(this.config.presets, null, 2));
 	},
 
 	/**
@@ -501,11 +498,21 @@ Module.register("MMM-FrameLight", {
 	 */
 	notificationReceived: function (notification, payload, sender) {
 		const self = this;
+		let d = new Date();
+		let actualHours = d.getHours();
 
 		// for each configured notification send specified effect to py
 		self.config.Notifications.forEach((nFication) => {
 			if (nFication.name === notification) {
-				self.sendObjectToPy(nFication);
+				// check if NightTimeNotifications are allowed
+				if (self.config.NightTimeNotifications) {
+					self.sendObjectToPy(nFication);
+				} else {
+					// if theyre forbidden check if theyre in time range
+					if (actualHours >= self.config.NightTimeEnd && actualHours <= self.config.NightTimeStart) {
+						self.sendObjectToPy(nFication);
+					}
+				}
 			}
 		});
 
