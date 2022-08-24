@@ -60,9 +60,6 @@ def rainbow_cycle_successive(leds, color1=(0,0,0), cycles = 2, time_per_step=0.0
             leds.show()
             time.sleep(time_per_step)
 
-    # set color to original color
-    set_color(leds, color1)
-
 #Name:          Rainbow Cycle
 #Description:   lets all rainbow colors spin around at once
 def rainbow_cycle(leds, cycles=2, time_per_step=0.005):
@@ -378,6 +375,9 @@ def start_effect(leds, strEffect, strActiveColor, arrColors = [''], arrOptions =
         wobbling_segments(leds, color1=create_tuple(arrColors[0]), color2=create_tuple(arrColors[1]), cycles=arrOptions[0], time_per_step=arrOptions[1], segments=arrOptions[2], wobble_factor=arrOptions[3])
     elif strEffect == "SwipeMove":
         swipe_move(leds, color1=create_tuple(arrColors[0]), color2=create_tuple(arrColors[1]), cycles=arrOptions[0], time_per_step=arrOptions[1], movement_start=arrOptions[2], movement_direction=arrOptions[3], movement_width=arrOptions[4], bar_length=arrOptions[5], offset_start=arrOptions[6])
+
+    if not data["partyMode"]:
+        set_color(leds, color1=tupleActiveColor)
 
 #Name:          Color Wheel
 #Description:   interpolates RGB colors for rainbow effects
