@@ -80,7 +80,6 @@ Module.register("MMM-FrameLight", {
 	 * Load translations files
 	 */
 	getTranslations: function () {
-		//FIXME: This can be load a one file javascript definition
 		return {
 			en: "translations/en.json",
 			de: "translations/de.json"
@@ -500,21 +499,57 @@ Module.register("MMM-FrameLight", {
 		const self = this;
 		let d = new Date();
 		let actualHours = d.getHours();
+		let actualSeconds = d.getSeconds();
+
+		/**
+		 * check if actual hours is between nighttime start and nighttime end
+		 * @param {integer} NTStart 
+		 * @param {integer} NTEnd 
+		 * @param {integer} AH 
+		 */
+		function checkNightTime(NTStart, NTEnd, AH) {
+			let i = NTStart;
+			let NTArray = new Array(24).fill(0); 
+			// creates array with 24 elements containing zeros. Every position represents an hour of the day (0-23)
+			while (true) {
+				if (i === NTEnd) { // if increment arrives at night time end, loop breaks
+					break;
+				}
+				
+				NTArray[i] = 1; // night time array gets set to 1, meaning slot is part of night time
+				
+				i++;
+				if (i >= 24) { // catching the case increment passes midnight
+					i = 0;
+				}
+			}
+
+			if (NTArray[AH] === 1) { // checking if actual hour is part of night time
+				checkNightTime = true;
+			} else {
+				checkNightTime = false;
+			}
+		}
 
 		// for each configured notification send specified effect to py
 		self.config.Notifications.forEach((nFication) => {
 			if (nFication.name === notification) {
-				// check if NightTimeNotifications are allowed
+				// check if NightTimeNotifications in config is set to true
 				if (self.config.NightTimeNotifications) {
 					self.sendObjectToPy(nFication);
 				} else {
-					// if theyre forbidden check if theyre in time range
-					if (actualHours >= self.config.NightTimeEnd && actualHours <= self.config.NightTimeStart) {
+					// if NightTimeNotifications in config is set to false, check if actualHours is out of night time
+					if (!checkNightTime(self.config.NightTimeStart, self.config.NightTimeEnd, actualHours)) {
 						self.sendObjectToPy(nFication);
 					}
 				}
 			}
 		});
+
+		// when night time starts, switch leds off once (exactly at the beginning of night time)
+		if (actualHours === NightTimeStart && actualSeconds === 0) {
+			self.switchLights(self.config.presets, false);
+		}
 
 		switch (notification) {
 			case "FRAMELIGHT_ON":
