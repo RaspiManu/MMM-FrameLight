@@ -499,8 +499,9 @@ Module.register("MMM-FrameLight", {
 		const self = this;
 		let d = new Date();
 		let actualHours = d.getHours();
+		let actualMinutes = d.getMinutes();
 		let actualSeconds = d.getSeconds();
-
+		
 		/**
 		 * check if actual hours is between nighttime start and nighttime end
 		 * @param {integer} NTStart 
@@ -547,7 +548,7 @@ Module.register("MMM-FrameLight", {
 		});
 
 		// when night time starts, switch leds off once (exactly at the beginning of night time)
-		if (actualHours === self.config.NightTimeStart && actualSeconds === 0) {
+		if (actualHours === self.config.NightTimeStart && actualMinutes === 0 && actualSeconds === 0) {
 			self.switchLights(self.config.presets, false);
 		}
 
