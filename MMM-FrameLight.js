@@ -31,11 +31,11 @@ Module.register("MMM-FrameLight", {
 		LEDCount: 160,
 		Touchmode: true,
 		ShowCaptions: true,
-		ShowPartyMode: true,
+		ShowPartyMode: false,
 		NightTimeActive: true,
 		NightTimeStart: 22,
 		NightTimeEnd: 6,
-		NightTimeNotifications: true,
+		NightTimeNotifications: false,
 		Notifications: [{}],
 		PartyMatrix: [{}]
 	},
