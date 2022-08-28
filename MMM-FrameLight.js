@@ -196,7 +196,7 @@ Module.register("MMM-FrameLight", {
 				</div>
 			</div>
 		</div>`;
-		wrapper.appendChild(settingMenu);
+		document.body.appendChild(settingMenu);
 
 		setTimeout(() => {
 			// wait for dom and add event listener
