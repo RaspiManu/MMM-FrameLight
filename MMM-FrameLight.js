@@ -509,27 +509,17 @@ Module.register("MMM-FrameLight", {
 		 * @param {integer} AH 
 		 */
 		function checkNightTime(NTStart, NTEnd, AH) {
-			let i = NTStart;
-			let NTArray = new Array(24).fill(0); 
-			// creates array with 24 elements containing zeros. Every position represents an hour of the day (0-23)
-			while (true) {
-				if (i === NTEnd) { // if increment arrives at night time end, loop breaks
-					break;
-				}
-				
-				NTArray[i] = 1; // night time array gets set to 1, meaning slot is part of night time
-				
-				i++;
-				if (i >= 24) { // catching the case increment passes midnight
-					i = 0;
-				}
-			}
-
-			if (NTArray[AH] === 1) { // checking if actual hour is part of night time
-				checkNightTime = true;
-			} else {
-				checkNightTime = false;
-			}
+			if (AH === NTStart) return true; // first hour returns true
+			if (AH === NTEnd) return false;	// last hour returns false
+		
+			let isInRange = false;
+			const isBiggerThanBoth = () => AH > NTStart && AH > NTEnd;
+			const isSmallerThanBoth = () => AH < NTStart && AH < NTEnd;
+		
+			if(isBiggerThanBoth() || isSmallerThanBoth()) isInRange = true;
+			if (NTStart < NTEnd) isInRange = !isInRange; // invert result when NTStart < NTEnd
+		
+			return isInRange;
 		}
 
 		// for each configured notification send specified effect to py
