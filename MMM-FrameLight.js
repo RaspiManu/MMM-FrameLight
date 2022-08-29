@@ -64,9 +64,6 @@ Module.register("MMM-FrameLight", {
 			controlsTopLeft[0].className = "controls topLeft";
 			controlsTopLeft[1].className = "controls topLeft";
 		}
-
-		// copy activePreset from json to activeField
-		this.config.activeField = this.config.presets.activePreset;
 	},
 
 	/**
@@ -133,7 +130,6 @@ Module.register("MMM-FrameLight", {
 		};
 
 		objectToPy = jsonReplaceActiveColor(objectToPy);
-
 		this.sendSocketNotification("sendToPy", objectToPy);
 		this.sendSocketNotification("saveJSON", JSON.stringify(this.config.presets, null, 2));
 	},
@@ -382,7 +378,7 @@ Module.register("MMM-FrameLight", {
 		}
 	},
 
-	/**
+	/**"fas"
 	 * changes lightbulb icon and sends light signal to py depending on state
 	 * @param {object} jsonPresets color object from preset json
 	 * @param {object} turnOn color object from preset json
@@ -461,11 +457,13 @@ Module.register("MMM-FrameLight", {
 		if (notification === "ledPresets") {
 			try {
 				this.config.presets = JSON.parse(payload);
+				// copy activePreset from json to activeField
+				this.config.activeField = this.config.presets.activePreset;
 
 				const lightIcon = document.getElementById("lightBulb");
 				const switchCaption = document.getElementById("switchCaption");
 
-				if (this.config.presets.state === "on") {
+				if (this.config.presets.state !== "off") {
 					lightIcon.className = "fas fa-lightbulb";
 					switchCaption.innerHTML = self.translate("TURNOFF");
 					self.sendObjectToPy({
@@ -485,8 +483,16 @@ Module.register("MMM-FrameLight", {
 				console.log("error: " + e);
 				this.sendSocketNotification("createJSON", {});
 			}
+
+			this.loaded();
 		}
-		this.loaded();
+
+		if (notification === "shuttingDown") {
+			self.sendObjectToPy({
+				effect: "lightOff",
+				colors: ["rgb(0,0,0)"]
+			});
+		}
 	},
 
 	/**
@@ -501,24 +507,24 @@ Module.register("MMM-FrameLight", {
 		let actualHours = d.getHours();
 		let actualMinutes = d.getMinutes();
 		let actualSeconds = d.getSeconds();
-		
+
 		/**
 		 * check if actual hours is between nighttime start and nighttime end
-		 * @param {integer} NTStart 
-		 * @param {integer} NTEnd 
-		 * @param {integer} AH 
+		 * @param {integer} NTStart
+		 * @param {integer} NTEnd
+		 * @param {integer} AH
 		 */
 		function checkNightTime(NTStart, NTEnd, AH) {
 			if (AH === NTStart) return true; // first hour returns true
-			if (AH === NTEnd) return false;	// last hour returns false
-		
+			if (AH === NTEnd) return false; // last hour returns false
+
 			let isInRange = false;
 			const isBiggerThanBoth = () => AH > NTStart && AH > NTEnd;
 			const isSmallerThanBoth = () => AH < NTStart && AH < NTEnd;
-		
-			if(isBiggerThanBoth() || isSmallerThanBoth()) isInRange = true;
+
+			if (isBiggerThanBoth() || isSmallerThanBoth()) isInRange = true;
 			if (NTStart < NTEnd) isInRange = !isInRange; // invert result when NTStart < NTEnd
-		
+
 			return isInRange;
 		}
 
