@@ -94,7 +94,7 @@ This chapter is about the configuration of MMM-FrameLight to fit individual need
 
 ### Basic touch configuration
 
-The basic configuration of the module is focused on its core functionality as a touch controlled background light around the smart mirror. It can be configured this way by opening `config/config.js`inside the MagicMirror folder an adding the following to the `modules: {}` section:
+The basic configuration of the module is focused on its core functionality as a touch controlled background light around the smart mirror. It can be configured this way by opening `config/config.js` inside the MagicMirror folder an adding the following to the `modules: {}` section:
 
 ```js
 {
@@ -117,7 +117,7 @@ The basic configuration of the module is focused on its core functionality as a 
 },
 ```
 
-The module's `position` can be defined according to the [MagicMirror² documentation on module configuration](https://docs.magicmirror.builders/modules/configuration.html). Using a `header` above the touch buttons is optional. It can be filled with any text (string, e.g. something in native language). The settings within `config: {}` work as described in the following table:
+The module's `position` can be defined according to the [MagicMirror² documentation on module configuration](https://docs.magicmirror.builders/modules/configuration.html). For aesthetic reasons, the options `'top_left'`, `'top_center'`, `'top_right'`, `'bottom_left'`, `'bottom_center'` and `'bottom_right'` are highly recommended. Using a `header` above the touch buttons is optional. It can be filled with any text (string, e.g. something in native language). The settings within `config: {}` work as described in the following table:
 
 | Parameter | Type     | Description                |Default                    |Options                    |
 | :-------- | :------- | :------------------------- |:------------------------- |:------------------------- |
@@ -126,7 +126,7 @@ The module's `position` can be defined according to the [MagicMirror² documenta
 | Touchmode | boolean | show module's graphical touch interface<br>false will lead to module working hidden in background<br>(requires "Non-touch configuration", see below) | true | true / false |
 | ShowCaptions | boolean | show touch buttons' captions | true | true / false |
 | ShowPartyMode | boolean | show party mode switch within settings menu<br>(party mode requires "Advanced configuration", see below) | false | true / false |
-| NightTimeActive | boolean | turn off lights during defined night time and on again afterwards | true | true / false |
+| NightTimeActive | boolean | turn off lights when defined night time starts<br>(no automatic restoring of state before night time after night time for safety reasons) | true | true / false |
 | NightTimeStart | integer | time at which night time mode is activated | 22 | integers from 0 to 23 |
 | NightTimeEnd | integer | time at which night time mode is deactivated | 6 | integers from 0 to 23 |
 | NightTimeNotifications | boolean | show notification effects during night time<br>(notification effects require "Advanced configuration", see below) | false | true / false |
@@ -140,7 +140,7 @@ The advanced configuration of the module adds lighting effects to the basic conf
 
 <img src="../media/README Media/images/warning_break.png" width="1000" height="8">
 
-**WARNING:** The following subchapter contains bright, flashing imagery that may cause discomfort and/or seizures for those with photosensitive epilepsy. Reader discretion is advised.
+**WARNING:** The following subchapter contains bright, flashing imagery that may cause discomfort and / or seizures for those with photosensitive epilepsy. Reader discretion is advised.
 
 <img src="../media/README Media/images/warning_break.png" width="1000" height="8">
 
@@ -148,7 +148,7 @@ The advanced configuration of the module adds lighting effects to the basic conf
 
 #### Effects on system notifications
 
-There are a lot of options on what to realise with lighting effects on system notifications. Example use cases are visual feedback on touch gestures or indicating that another module shows new information. Effects on notifications are defined within `Notifications: []` under `config: {}` analogous to this example:
+There are a lot of options on what to realize with lighting effects on system notifications. Example use cases are visual feedback on touch gestures or indicating that another module shows new information. Effects on notifications are defined within `Notifications: []` under `config: {}` analogous to this example:
 
 ```js
 Notifications: [{
@@ -201,7 +201,7 @@ options: []		//set configuration options besides colors
 
 `colors` and `options` are arrays whose contents are separated by `,`.
 
-MMM-FrameLight works with the RGB color format. Each color needs to be set like `"rgb(255, 0, 0)"` (string because of data transfer to Python). Dimmed colors or unlit segments of effects can be realised by increasing the amount of black in the color. The current background light color can be implemented into an effect via using `"active color"` instead of an RGB string as one of the colors. Doing so can lead to beautiful overlaying effects. The RGB values of the desired colors could be taken from the settings menu of the module (touch configuration only).
+MMM-FrameLight works with the RGB color format. Each color needs to be set like `"rgb(255, 0, 0)"` (string because of data transfer to Python). Dimmed colors or unlit segments of effects can be realized by increasing the amount of black in the color. The current background light color can be implemented into an effect via using `"active color"` instead of an RGB string as one of the colors. Doing so can lead to beautiful overlaying effects. The RGB values of the desired colors could be taken from the settings menu of the module (touch configuration only).
 
 **NOTE:** Each effect has its own number of `colors` and `options` and all of them need to be set according to the effect list below (order of `colors` and `options` matters).
 
@@ -370,7 +370,7 @@ The following effects are currently available for selection:
    
    <img src="../media/README Media/GIFs/Swipe_Move.gif" width="200">
 
-   This lighting effect shows a mono or bidirectional swipe move and is highly configurable to visualise touch inputs and system notifications. It can be set by using:
+   This lighting effect shows a mono- or bidirectional swipe move and is highly configurable to visualize touch inputs and system notifications. It can be set by using:
 
    ```js
    effect: "SwipeMove",
@@ -431,6 +431,8 @@ The module can be extended by contributing own lighting effects via [pull reques
 This chapter mentions people without whom the realisation of this project would not have been possible. Thank you!
 
 - [ViatorisBaculum](https://github.com/ViatorisBaculum) (co-creator of MMM-FrameLight, js genius)
+
+- [mako017](https://github.com/mako017) (programming consultant)
 
 - [jaames](https://github.com/jaames) (creator of awesome open source color picker [iro.js](https://github.com/jaames/iro.js) (modified for this project) and the beautiful break line for the README)
 
