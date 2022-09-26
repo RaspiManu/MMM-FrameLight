@@ -64,10 +64,10 @@ The first software related step is to install some repositories used by MMM-Fram
 After successfully installing the needed repositories, MMM-FrameLight can be installed by using these commands in a console / terminal (LXTerminal on Raspberry Pi):
 
 ```bash
-  cd ~/MagicMirror/modules                                  #adapt path to module folder if it is not the default folder
-  git clone https://github.com/RaspiManu/MMM-FrameLight
-  cd MMM-FrameLight
-  npm install
+cd ~/MagicMirror/modules                                  #adapt path to module folder if it is not the default folder
+git clone https://github.com/RaspiManu/MMM-FrameLight
+cd MMM-FrameLight
+npm install
 ```
 
 <img src="../media/README Media/images/break.png" width="1000" height="16">
@@ -77,9 +77,9 @@ After successfully installing the needed repositories, MMM-FrameLight can be ins
 MMM-FrameLight can be updated / maintained by using `git` commands inside the module's folder. To update use the following commands:
 
 ```bash
-  cd ~/MagicMirror/modules/MMM-FrameLight                   #adapt path to module folder if it is not the default folder
-  git status                                                #optional step to check for changes before updating
-  git pull
+cd ~/MagicMirror/modules/MMM-FrameLight                   #adapt path to module folder if it is not the default folder
+git status                                                #optional step to check for changes before updating
+git pull
 ```
 
 If `git pull` leads to a message like “your local changes to the following files would be overwritten by merge”, you may have done local edits to the module's files. The local module files can be reset by using `git reset --hard` before using `git pull`. A backup of the old files is recommended in case some changes were on purpose (e.g. modifications to the module's look by editing the CSS file) and need to be restored after updating.
@@ -400,7 +400,37 @@ The following effects are currently available for selection:
 
 ### Non-touch configuration
 
-WORK IN PROGRESS
+The non-touch configuration of the module is focused on hiding it on mirrors without touch input and controlling it via MagicMirror² system notifications. This is realized by setting up the basic touch configuration with `Touchmode: false`. The control methods mentioned in this part of the documentation also work in combination with a configuration for touch input (basic or advanced). A complete non-touch configuration provides the full functionality of the module (for effects on system notifications and party mode see advanced touch configuration) with one exception: There is no touch interface to change the color presets. Therefore this must be done within `color_presets.JSON`. The file can be found inside the module's folder (subfolder `presets`). It can be modified via the GUI of the system used or with the following commands in a console / terminal (LXTerminal on Raspberry Pi):
+
+```bash
+cd ~/MagicMirror/modules/MMM-FrameLight/presets           #adapt path to module folder if it is not the default folder
+nano color_presets.JSON
+```
+
+There are 10 presets inside of `color_presets.JSON` (`"color0"` to `"color9"`). Each of them is assigned an RGB value in string format, that can be customized (e. g. `"rgb(255, 0, 0)"`, format important for data transfer to Python). After customization, the file must be saved (when using nano editor: press `Ctrl + O` to save and `Ctrl + X` to quit file).
+
+Controlling the module via MagicMirror² system notifications **requires the use of additional modules**, that are able to send such notifications. Examples for modules like this are [MMM-Remote-Control by Jopyth](https://github.com/Jopyth/MMM-Remote-Control) (integrating MMM-FrameLight into home automations, examples below) and voice control modules in general (choose according to need for features). On smart mirrors with touch input it is also possible to visualize touch gestures using the swipe move effect with custom notifications defined inside the configuration of [MMM-Touch by gfischershaw](https://github.com/gfischershaw/MMM-Touch) and MMM-FrameLight (s. advanced touch configuration). The following table lists the MagicMirror² system notifications, that can be used to control MMM-FrameLight:
+
+| Notification | Action |
+| :-------- | :------- |
+| FRAMELIGHT_ON | turn on lights |
+| FRAMELIGHT_OFF | turn off lights |
+| FRAMELIGHT_PARTY_ON | turn on party mode |
+| FRAMELIGHT_PARTY_OFF | turn off party mode and lights (fewer commands required to turn off) |
+| FRAMELIGHT_PRESET | switch to another preset<br>(requires `payload` with **value 0 to 9**)|
+
+The following examples show how to integrate MMM-FrameLight into home automations using cURL and the REST API of [MMM-Remote-Control by Jopyth](https://github.com/Jopyth/MMM-Remote-Control) (must be set up in advance):
+
+- Notification without payload via GET method (adapt IP and notification to individual case):
+
+  ```bash
+  curl -X GET http://IP.of.smart.mirror:8080/api/notification/FRAMELIGHT_ON
+  ```
+- Notification with payload via POST method (adapt IP, notification and payload to individual case):
+
+  ```bash
+  curl -X POST -H "Content-Type: application/json" -d "{\"preset\": 9}" http://IP.of.smart.mirror:8080/api/notification/FRAMELIGHT_PRESET
+  ```
 
 <img src="../media/README Media/images/break.png" width="1000" height="40">
 
@@ -428,7 +458,7 @@ The module can be extended by contributing own lighting effects via [pull reques
 
 ## Special Thanks
 
-This chapter mentions people without whom the realisation of this project would not have been possible. Thank you!
+This chapter mentions people without whom the realization of this project would not have been possible. Thank you!
 
 - [ViatorisBaculum](https://github.com/ViatorisBaculum) (co-creator of MMM-FrameLight, js genius)
 
