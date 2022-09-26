@@ -409,14 +409,14 @@ nano color_presets.JSON
 
 There are 10 presets inside of `color_presets.JSON` (`"color0"` to `"color9"`). Each of them is assigned an RGB value in string format, that can be customized (e. g. `"rgb(255, 0, 0)"`, format important for data transfer to Python). After customization, the file must be saved (when using nano editor: press `Ctrl + O` to save and `Ctrl + X` to quit file).
 
-Controlling the module via MagicMirror² system notifications **requires the use of additional modules**, that are able to send such notifications. Examples for modules like this are [MMM-Remote-Control by Jopyth](https://github.com/Jopyth/MMM-Remote-Control) (integrating MMM-FrameLight into home automations, examples below) and voice control modules in general (choose according to need for features). On smart mirrors with touch input it is also possible to visualize touch gestures using the swipe move effect with custom notifications defined inside the configuration of [MMM-Touch by gfischershaw](https://github.com/gfischershaw/MMM-Touch) and MMM-FrameLight (s. advanced touch configuration). The following table lists the MagicMirror² system notifications, that can be used to control MMM-FrameLight:
+Controlling the module via MagicMirror² system notifications **requires the use of additional modules**, that are able to send such notifications. Examples for modules like this are [MMM-Remote-Control by Jopyth](https://github.com/Jopyth/MMM-Remote-Control) (integrating MMM-FrameLight into home automations, examples below) and voice control modules in general (choose according to need for features). On smart mirrors with touch input it is also possible to visualize touch gestures using the Swipe Move effect with custom notifications defined inside the configuration of [MMM-Touch by gfischershaw](https://github.com/gfischershaw/MMM-Touch) and MMM-FrameLight (s. advanced touch configuration). The following table lists the MagicMirror² system notifications, that can be used to control MMM-FrameLight:
 
 | Notification | Action |
 | :-------- | :------- |
 | FRAMELIGHT_ON | turn on lights |
 | FRAMELIGHT_OFF | turn off lights |
 | FRAMELIGHT_PARTY_ON | turn on party mode |
-| FRAMELIGHT_PARTY_OFF | turn off party mode and lights (fewer commands required to turn off) |
+| FRAMELIGHT_PARTY_OFF | turn off party mode and lights<br>(fewer commands required to turn off) |
 | FRAMELIGHT_PRESET | switch to another preset<br>(requires `payload` with **value 0 to 9**)|
 
 The following examples show how to integrate MMM-FrameLight into home automations using cURL and the REST API of [MMM-Remote-Control by Jopyth](https://github.com/Jopyth/MMM-Remote-Control) (must be set up in advance):
