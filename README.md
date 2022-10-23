@@ -30,7 +30,7 @@ WORK IN PROGRESS
 
 <img src="../media/README Media/images/break.png" width="1000" height="40">
 
-## Installation and Updating
+## Installation and updating
 
 This chapter shows how to install MMM-FrameLight and maintain it.
 
@@ -40,11 +40,11 @@ This chapter shows how to install MMM-FrameLight and maintain it.
 
 To use MMM-FrameLight, it is essential to have a **WS2801 LED strip** connected to the smart mirror device. Other types of LED strips are currently not supported. WS2801 is the default LED type of the module because some other types may block the onboard sound output of a Raspberry Pi (see [here](https://github.com/adafruit/Adafruit_CircuitPython_WS2801)). This could lead to problems when using voice control or other sound related MagicMirror² modules. The LED strip should be **mounted clockwise** around the mirror.
 
-There are a lot of good tutorials on how to connect the WS2801 LED strip to a device. Here are some Links for the most common case (RaspberryPi):
+There are a lot of good tutorials on how to connect the WS2801 LED strip to a device. Here are some links for the most common case (RaspberryPi):
 - [How to control a Raspberry Pi WS2801 RGB LED Strip](https://tutorials-raspberrypi.com/how-to-control-a-raspberry-pi-ws2801-rgb-led-strip/)
 - [Raspberry Pi controlled WS2801 RGB LEDs](https://andypi.co.uk/2014/12/27/raspberry-pi-controlled-ws2801-rgb-leds/)
 
-**NOTE:** The Links are listed to provide information about wiring the LED strip. The installation of the described software is not needed to use MMM-FrameLight.
+**NOTE:** The links are listed to provide information about wiring the LED strip. The installation of the described software is not needed to use MMM-FrameLight.
 
 <img src="../media/README Media/images/warning_break.png" width="1000" height="8">
 
@@ -394,7 +394,7 @@ The following effects are currently available for selection:
 
    Special features: none
 
-   **NOTE:** To seamlessly implement the visualisation of a touch input, using `"active color"` as `color1` is highly recommended. When using direction "both" with an even number of LEDs, movement_start has to be the right one of the two start LEDs. The option offset_start is mainly focused on bidirectional configurations and should normally be 0. An example for using offset_start is to configure a swipe move at the top and bottom of the frame (see GIF, middle height of one side is movement_start).
+   **NOTE:** To seamlessly implement the visualization of a touch input, using `"active color"` as `color1` is highly recommended. When using `movement_direction` `"both"` with an even number of LEDs, `movement_start` has to be the right one of the two start LEDs. The option `offset_start` is mainly focused on bidirectional configurations and should normally be set to `0`. An example for using `offset_start` is to configure a swipe move at the top and bottom of the frame (see GIF, middle height of one side is `movement_start`).
 
 <img src="../media/README Media/images/break.png" width="1000" height="16">
 
@@ -463,6 +463,8 @@ This chapter mentions people without whom the realization of this project would 
 - [ViatorisBaculum](https://github.com/ViatorisBaculum) (co-creator of MMM-FrameLight, js genius)
 
 - [mako017](https://github.com/mako017) (programming consultant)
+
+- [MichMich](https://github.com/MichMich) (creator of incredible [MagicMirror² project](https://github.com/MichMich/MagicMirror), that inspired us to contribute this module)
 
 - [jaames](https://github.com/jaames) (creator of awesome open source color picker [iro.js](https://github.com/jaames/iro.js) (modified for this project) and the beautiful break line for the README)
 
