@@ -464,11 +464,11 @@ This chapter mentions people without whom the realization of this project would 
 
 - [mako017](https://github.com/mako017) (programming consultant)
 
-- [MichMich](https://github.com/MichMich) (creator of incredible [MagicMirror² project](https://github.com/MichMich/MagicMirror), that inspired us to contribute this module)
+- [MichMich](https://github.com/MichMich) (creator of incredible [MagicMirror² project](https://magicmirror.builders/), that inspired us to contribute this module)
 
 - [jaames](https://github.com/jaames) (creator of awesome open source color picker [iro.js](https://github.com/jaames/iro.js) (modified for this project) and the beautiful break line for the README)
 
-- [ladyada](https://github.com/ladyada) ([Adafruit Industries](https://github.com/adafruit)) (creator of lighting effect examples for [Adafruit CircuitPython DotStar](https://github.com/adafruit/Adafruit_CircuitPython_DotStar))
+- [ladyada](https://github.com/ladyada) ([Adafruit Industries](https://github.com/adafruit)) (creator of helpful lighting effect examples for [Adafruit CircuitPython DotStar](https://github.com/adafruit/Adafruit_CircuitPython_DotStar))
 
 <img src="../media/README Media/images/break.png" width="1000" height="40">
 
