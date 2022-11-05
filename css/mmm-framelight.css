@@ -302,7 +302,7 @@ html {
 }
 
 .onoffswitch-inner:before {
-	content: "on";
+	content: var(--PARTYON, "on");
 	padding-left: 12px;
 	background-color: #a9e3ff;
 	color: #000;
@@ -310,7 +310,7 @@ html {
 }
 
 .onoffswitch-inner:after {
-	content: "off";
+	content: var(--PARTYOFF, "off");
 	padding-right: 12px;
 	background-color: #000000;
 	color: #999;

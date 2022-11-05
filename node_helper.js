@@ -29,6 +29,8 @@ module.exports = NodeHelper.create({
 
 	stop: function () {
 		this.sendSocketNotification("shuttingDown", true);
+
+		this.pythonStop();
 	},
 
 	/**
