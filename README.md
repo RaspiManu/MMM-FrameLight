@@ -187,6 +187,8 @@ PartyMatrix: [{
 
 Every lighting effect inside `PartyMatrix: []` is surrounded by `{}` and separated by `,`. For explanations on how to configure effects see "Effect configuration".
 
+**NOTE:** While party mode is active, the party mode effect script runs in an infinite loop, which is stopped along with a correct shutdown of the [MagicMirror²](https://magicmirror.builders/) program or the system. In case of abrupt termination of the [MagicMirror²](https://magicmirror.builders/) program while party mode is active, control over the script is lost and the complete system must be restarted.
+
 <img src="../media/README Media/images/break.png" width="1000" height="8">
 
 #### Effect configuration
