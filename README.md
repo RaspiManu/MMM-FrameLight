@@ -187,7 +187,7 @@ PartyMatrix: [{
 
 Every lighting effect inside `PartyMatrix: []` is surrounded by `{}` and separated by `,`. For explanations on how to configure effects see "Effect configuration".
 
-**NOTE:** While party mode is active, the party mode effect script runs in an infinite loop, which is stopped along with a correct shutdown of the [MagicMirror²](https://magicmirror.builders/) program or the system. In case of abrupt termination of the [MagicMirror²](https://magicmirror.builders/) program while party mode is active, control over the script is lost and the complete system must be restarted.
+**NOTE:** While party mode is active, the party mode effect script runs in an infinite loop, which is stopped along with a correct shutdown of the MagicMirror² program or the system. In case of abrupt termination of the MagicMirror² program while party mode is active, control over the script is lost and the complete system must be restarted.
 
 <img src="../media/README Media/images/break.png" width="1000" height="8">
 
@@ -410,6 +410,8 @@ nano color_presets.JSON
 ```
 
 There are 10 presets inside of `color_presets.JSON` (`"color0"` to `"color9"`). Each of them is assigned an RGB value in string format, that can be customized (e. g. `"rgb(255, 0, 0)"`, format important for data transfer to Python). After customization, the file must be saved (when using nano editor: press `Ctrl + O` to save and `Ctrl + X` to quit file).
+
+**NOTE:** If the format of `color_presets.JSON` is corrupted, the file can be deleted manually. A subsequent restart of the MagicMirror² program will automatically recreate the file with default settings.
 
 Controlling the module via MagicMirror² system notifications **requires the use of additional modules**, that are able to send such notifications. Examples for modules like this are [MMM-Remote-Control by Jopyth](https://github.com/Jopyth/MMM-Remote-Control) (integrating MMM-FrameLight into home automations, examples below) and voice control modules in general (choose according to need for features). On smart mirrors with touch input it is also possible to visualize touch gestures using the Swipe Move effect with custom notifications defined inside the configuration of [MMM-Touch by gfischershaw](https://github.com/gfischershaw/MMM-Touch) and MMM-FrameLight (s. advanced touch configuration). The following table lists the MagicMirror² system notifications, that can be used to control MMM-FrameLight:
 
