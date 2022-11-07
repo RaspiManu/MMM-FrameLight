@@ -1,7 +1,5 @@
 {
   "SETTINGS": "Settings",
   "TURNON": "Turn on",
-  "TURNOFF": "Turn off",
-  "PARTYON": "on",
-  "PARTYOFF": "off"
- }
+  "TURNOFF": "Turn off"
+}

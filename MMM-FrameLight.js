@@ -132,8 +132,6 @@ Module.register("MMM-FrameLight", {
 		objectToPy = jsonReplaceActiveColor(objectToPy);
 		this.sendSocketNotification("sendToPy", objectToPy);
 		this.sendSocketNotification("saveJSON", JSON.stringify(this.config.presets, null, 2));
-
-		console.log(objectToPy);
 	},
 
 	/**
@@ -207,10 +205,6 @@ Module.register("MMM-FrameLight", {
 			//partyMode event handler
 			let partyModeCheckBox = document.getElementById("switch");
 			partyModeCheckBox.addEventListener("click", () => self.switchPartyMode());
-
-			const partyPseudo = document.querySelector(".onoffswitch-inner");
-			partyPseudo.style.setProperty("--PARTYON", `"${this.translate("PARTYON")}"`);
-			partyPseudo.style.setProperty("--PARTYOFF", `"${this.translate("PARTYOFF")}"`);
 		}, 300);
 
 		// function to fill a number with zeros
@@ -494,6 +488,8 @@ Module.register("MMM-FrameLight", {
 		}
 
 		if (notification === "shuttingDown") {
+			self.switchPartyMode(false);
+
 			self.sendObjectToPy({
 				effect: "lightOff",
 				colors: ["rgb(0,0,0)"]

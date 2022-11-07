@@ -1,6 +1,6 @@
 /* ICONS ------------------------*/
 html {
-	cursor: default !important;
+	/* cursor: default !important; */
 }
 
 .ledContainer {
@@ -302,16 +302,16 @@ html {
 }
 
 .onoffswitch-inner:before {
-	content: var(--PARTYON, "on");
-	padding-left: 12px;
+	content: "I";
+	padding-left: 20px;
 	background-color: #a9e3ff;
 	color: #000;
 	text-align: left;
 }
 
 .onoffswitch-inner:after {
-	content: var(--PARTYOFF, "off");
-	padding-right: 12px;
+	content: "O";
+	padding-right: 15px;
 	background-color: #000000;
 	color: #999;
 	text-align: right;
