@@ -26,7 +26,14 @@ This is a [MagicMirror²](https://magicmirror.builders/) module for controlling 
 
 ## Demonstration
 
-WORK IN PROGRESS
+<div align="center">
+    <a href="https://www.youtube.com/watch?v=GReUcp_zPoM">
+        <img
+        src="../media/README Media/GIFs/Demonstration_Redirection.gif" 
+        alt="Demonstration Redirection"
+        style="width:95%;">
+    </a>
+</div>
 
 <img src="../media/README Media/images/break.png" width="1000" height="40">
 
