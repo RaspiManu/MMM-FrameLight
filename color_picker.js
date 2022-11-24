@@ -1383,6 +1383,30 @@
           h(IroHandle, { isActive: true, index: activeColor.index, fill: activeColor.hslString, r: props.handleRadius, url: props.handleSvg, props: props.handleProps, x: handlePositions[activeColor.index].x, y: handlePositions[activeColor.index].y }))); }));
   }
 
+  function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+    var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
+    
+    return {
+      x: centerX + (radius * Math.cos(angleInRadians)),
+      y: centerY + (radius * Math.sin(angleInRadians))
+    };
+  }
+
+  function describeArc(x, y, radius, startAngle, endAngle){
+
+    var start = polarToCartesian(x, y, radius, endAngle);
+    var end = polarToCartesian(x, y, radius, startAngle);
+  
+    var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+  
+    var d = [
+      "M", start.x, start.y, 
+      "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
+    ].join(" ");
+  
+    return d;       
+  }
+  
   var HUE_STEPS = Array.apply(null, { length: 360 }).map(function (_, index) { return index; });
   function IroWheel(props) {
       var ref = getWheelDimensions(props);
@@ -1426,18 +1450,18 @@
                   h("stop", { offset: "100%", "stop-color": "#fff", "stop-opacity": "0" }))),
           h("g", { className: "IroWheelHue", "stroke-width": radius, fill: "none" }, HUE_STEPS.map(function (angle) { return (h("path", { key: angle, d: getSvgArcPath(cx, cy, radius / 2, angle, angle + 1.5), stroke: ("hsl(" + (translateWheelAngle(props, angle)) + ", 100%, 50%)") })); })),
           h("circle", { className: "IroWheelSaturation", cx: cx, cy: cy, r: radius, fill: ("url(" + (resolveSvgUrl('#' + uid)) + ")") }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "#ff0000", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "orange", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(30, " + cx + ", " + cy + ")" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "yellow", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(60, " + cx + ", " + cy + ")" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "#80ff00", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(90, " + cx + ", " + cy + ")" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "#06ff00", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(120, " + cx + ", " + cy + ")" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "#0ff0ff", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(150, " + cx + ", " + cy + ")" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "aqua", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(180, " + cx + ", " + cy + ")" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "#0082ff", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(210, " + cx + ", " + cy + ")" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "blue", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(240, " + cx + ", " + cy + ")" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "#0082ff", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(270, " + cx + ", " + cy + ")" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "fuchsia", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(300, " + cx + ", " + cy + ")" }),
-          h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: "#ff00e0", "stroke-width": 25, "stroke-dasharray": "700", "stroke-dashoffset" : "641.667", "transform" : "rotate(330, " + cx + ", " + cy + ")" }),
+          h("path", { className: "IroWheelPalette", stroke: "#c405ff", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 0*30, 1*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#ff2fc9", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 1*30, 2*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#ff0544", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 2*30, 3*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#ff4104", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 3*30, 4*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#ffbc04", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 4*30, 5*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#c9ff05", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 5*30, 6*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#44ff04", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 6*30, 7*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#06ff48", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 7*30, 8*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#04ffbe", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 8*30, 9*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#05c6ff", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 9*30, 10*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#0447ff", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 10*30, 11*30)}),
+          h("path", { className: "IroWheelPalette", stroke: "#4107ff", "stroke-width": 15, d: describeArc(cx, cy, radius*0.7, 11*30, 12*30)}),
           h("circle", { className: "IroWheelPalette", cx: cx, cy: cy, r: radius*0.65, fill: "#000", stroke: props.borderColor, "stroke-width": borderWidth }),
           props.wheelLightness && (h("circle", { className: "IroWheelLightness", cx: cx, cy: cy, r: radius, fill: "#000", opacity: 1 - hsv.v / 100 })),
           h("circle", { className: "IroWheelBorder", cx: cx, cy: cy, r: radius, fill: "none", stroke: props.borderColor, "stroke-width": borderWidth }),
@@ -1460,8 +1484,7 @@
           // Mount it into the DOM when the page document is ready
           if (document.readyState !== 'loading') {
               mountWidget();
-          }
-          else {
+          } else {
               document.addEventListener('DOMContentLoaded', mountWidget);
           }
           return widget;
