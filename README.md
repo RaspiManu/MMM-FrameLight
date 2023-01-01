@@ -5,7 +5,7 @@
     <img src="https://img.shields.io/github/downloads/RaspiManu/MMM-FrameLight/total">
     <img src="https://img.shields.io/github/contributors/RaspiManu/MMM-FrameLight">
     <img src="https://img.shields.io/github/issues-pr-closed/RaspiManu/MMM-FrameLight">
-    <img src="https://img.shields.io/maintenance/yes/2022">
+    <img src="https://img.shields.io/maintenance/yes/2023">
     <br><br>
     <a href="#demonstration">Demonstration</a> |
     <a href="#installation-and-updating">Installation and Updating</a> |
