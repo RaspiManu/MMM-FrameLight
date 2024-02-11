@@ -1,0 +1,32 @@
+{
+  "name": "mmm-framelight",
+  "version": "1.0.0",
+  "description": "Controlling an RGB-LED strip around a smart mirror with or without touch input. It provides features for static background lighting, highly customizable effects on notifications and party lighting.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RaspiManu/MMM-FrameLight"
+  },
+  "keywords": [
+    "magic mirror",
+    "smart mirror",
+    "LED strip",
+    "WS2801",
+    "static background light",
+    "customizable effects",
+    "party lighting",
+    "touch input",
+    "non-touch input",
+    "system notification input",
+    "module"
+  ],
+  "author": {
+    "name": "RaspiManu",
+    "url": "https://github.com/RaspiManu"
+  },
+  "contributors": "https://github.com/RaspiManu/MMM-FrameLight/graphs/contributors",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/RaspiManu/MMM-FrameLight/issues"
+  },
+  "homepage": "https://github.com/RaspiManu/MMM-FrameLight#readme"
+}
