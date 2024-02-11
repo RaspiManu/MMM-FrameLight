@@ -10,13 +10,13 @@
     "magic mirror",
     "smart mirror",
     "LED strip",
-    "WS2801"
+    "WS2801",
     "static background light",
     "customizable effects",
     "party lighting",
     "touch input",
     "non-touch input",
-    "system notification input"
+    "system notification input",
     "module"
   ],
   "author": {
